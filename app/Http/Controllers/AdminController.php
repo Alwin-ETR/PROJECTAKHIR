@@ -8,6 +8,7 @@ use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -202,18 +203,58 @@ class AdminController extends Controller
             return redirect('/')->with('error', 'Akses ditolak.');
         }
 
-        // Update status peminjaman
-        $peminjaman->update([
-            'status' => 'disetujui',
-            'catatan_admin' => request('catatan_admin', '')
-        ]);
+        try {
+            // Validasi stok sebelum approve
+            $barang = $peminjaman->barang;
+            
+            Log::info("=== APPROVE PEMINJAMAN DEBUG ===");
+            Log::info("Barang: " . $barang->nama);
+            Log::info("Stok SEBELUM: " . $barang->stok);
+            Log::info("Jumlah dipinjam: " . $peminjaman->jumlah);
+            
+            if ($peminjaman->jumlah > $barang->stok) {
+                return back()->with('error', 'Stok barang tidak mencukupi! Stok tersedia: ' . $barang->stok);
+            }
 
-        // Update status barang jadi dipinjam
-        $peminjaman->barang->update([
-            'status' => 'dipinjam'
-        ]);
+            // Update status peminjaman
+            $peminjaman->update([
+                'status' => 'disetujui',
+                'catatan_admin' => request('catatan_admin', 'Peminjaman disetujui')
+            ]);
 
-        return back()->with('success', 'Peminjaman disetujui!');
+            // KURANGI STOK BARANG - CARA MANUAL UNTUK DEBUG
+            $stokSebelum = $barang->stok;
+            $stokSesudah = $stokSebelum - $peminjaman->jumlah;
+            
+            Log::info("Stok SESUDAH (perhitungan): " . $stokSesudah);
+            
+            // Update stok manual
+            $barang->update([
+                'stok' => $stokSesudah
+            ]);
+            
+            // Refresh model untuk baca data terbaru
+            $barang->refresh();
+            
+            Log::info("Stok SESUDAH (dari database): " . $barang->stok);
+            
+            // HANYA UBAH STATUS JIKA STOK = 0
+            if ($barang->stok == 0) {
+                $barang->update(['status' => 'dipinjam']);
+                Log::info("Status diubah ke: dipinjam");
+            } else {
+                Log::info("Status tetap: " . $barang->status);
+            }
+
+            return back()->with('success', 
+                'Peminjaman disetujui! ' . 
+                'Stok ' . $barang->nama . ' berkurang dari ' . $stokSebelum . ' menjadi ' . $barang->stok
+            );
+
+        } catch (\Exception $e) {
+            Log::error("Error approve peminjaman: " . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function rejectPeminjaman(Peminjaman $peminjaman)
@@ -222,11 +263,70 @@ class AdminController extends Controller
             return redirect('/')->with('error', 'Akses ditolak.');
         }
 
-        $peminjaman->update([
-            'status' => 'ditolak',
-            'catatan_admin' => request('catatan_admin', '')
-        ]);
+        try {
+            // KEMBALIKAN STOK JIKA SUDAH DIPINJAM SEBELUMNYA
+            if ($peminjaman->status === 'disetujui') {
+                $barang = $peminjaman->barang;
+                
+                Log::info("=== REJECT PEMINJAMAN DEBUG ===");
+                Log::info("Barang: " . $barang->nama);
+                Log::info("Stok SEBELUM: " . $barang->stok);
+                Log::info("Jumlah dikembalikan: " . $peminjaman->jumlah);
+                
+                $barang->restoreStock($peminjaman->jumlah);
+                
+                Log::info("Stok SESUDAH: " . $barang->stok);
+            }
 
-        return back()->with('success', 'Peminjaman ditolak!');
+            $peminjaman->update([
+                'status' => 'ditolak',
+                'catatan_admin' => request('catatan_admin', 'Peminjaman ditolak')
+            ]);
+
+            return back()->with('success', 'Peminjaman ditolak!');
+
+        } catch (\Exception $e) {
+            Log::error("Error reject peminjaman: " . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    // ==================== TAMBAHAN: PENGEMBALIAN BARANG ====================
+
+    public function completePeminjaman(Peminjaman $peminjaman)
+    {
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            return redirect('/')->with('error', 'Akses ditolak.');
+        }
+
+        try {
+            // Kembalikan stok barang
+            $barang = $peminjaman->barang;
+            
+            Log::info("=== COMPLETE PEMINJAMAN DEBUG ===");
+            Log::info("Barang: " . $barang->nama);
+            Log::info("Stok SEBELUM: " . $barang->stok);
+            Log::info("Jumlah dikembalikan: " . $peminjaman->jumlah);
+
+            $barang->restoreStock($peminjaman->jumlah);
+
+            // Update status peminjaman
+            $peminjaman->update([
+                'status' => 'dikembalikan',
+                'tanggal_pengembalian' => now(),
+                'catatan_admin' => request('catatan_admin', 'Barang telah dikembalikan')
+            ]);
+
+            Log::info("Stok SESUDAH: " . $barang->stok);
+
+            return back()->with('success', 
+                'Barang berhasil dikembalikan! ' .
+                'Stok ' . $barang->nama . ' bertambah menjadi ' . $barang->stok
+            );
+
+        } catch (\Exception $e) {
+            Log::error("Error complete peminjaman: " . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }
