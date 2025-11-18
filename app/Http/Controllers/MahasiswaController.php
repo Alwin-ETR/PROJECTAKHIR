@@ -40,8 +40,12 @@ class MahasiswaController extends Controller
     public function addToCart(Request $request, $id)
     {
         $barang = Barang::findOrFail($id);
+<<<<<<< HEAD
 
         // PERBAIKAN: Tampilkan stok tersedia di error message
+=======
+        
+>>>>>>> 62db74613bb4eb03deb24465aabfc053edf457ec
         if (!$barang->canBeBorrowed()) {
             return redirect()->back()->with('error',
                 'Barang tidak dapat dipinjam. Stok tersedia: ' . $barang->stok_tersedia
@@ -51,7 +55,6 @@ class MahasiswaController extends Controller
         $cart = session()->get('cart_peminjaman', []);
 
         if (isset($cart[$id])) {
-            // PERBAIKAN: Validasi menggunakan stok_tersedia
             $totalAkanDipinjam = $cart[$id]['quantity'] + 1;
             if ($totalAkanDipinjam > $barang->stok_tersedia) {
                 return redirect()->back()->with('error',
@@ -82,22 +85,53 @@ class MahasiswaController extends Controller
     {
         $quantity = $request->input('quantity', 1);
         $barang = Barang::findOrFail($id);
+<<<<<<< HEAD
 
         // PERBAIKAN: Validasi menggunakan stok_tersedia
         if ($quantity < 1 || $quantity > $barang->stok_tersedia) {
             return redirect()->back()->with('error',
                 'Jumlah tidak valid. Stok tersedia: ' . $barang->stok_tersedia
             );
+=======
+        
+        if ($quantity < 1 || $quantity > $barang->stok_tersedia) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Jumlah tidak valid. Stok tersedia: ' . $barang->stok_tersedia
+                ], 400);
+            }
+            return redirect()->back()->with('error', 'Jumlah tidak valid');
+>>>>>>> 62db74613bb4eb03deb24465aabfc053edf457ec
         }
 
         $cart = session()->get('cart_peminjaman', []);
 
         if (isset($cart[$id])) {
             $cart[$id]['quantity'] = $quantity;
+            $cart[$id]['max_stok'] = $barang->stok_tersedia;
             session()->put('cart_peminjaman', $cart);
+            
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Jumlah berhasil diupdate',
+                    'max_stok' => $barang->stok_tersedia
+                ]);
+            }
             return redirect()->back()->with('success', 'Jumlah berhasil diupdate');
         }
+<<<<<<< HEAD
 
+=======
+        
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Item tidak ditemukan di keranjang'
+            ], 404);
+        }
+>>>>>>> 62db74613bb4eb03deb24465aabfc053edf457ec
         return redirect()->back()->with('error', 'Item tidak ditemukan di keranjang');
     }
 
@@ -128,8 +162,12 @@ class MahasiswaController extends Controller
         if (empty($cartItems)) {
             return redirect()->route('mahasiswa.dashboard')->with('error', 'Keranjang peminjaman kosong');
         }
+<<<<<<< HEAD
 
         // PERBAIKAN: Validasi stok tersedia
+=======
+        
+>>>>>>> 62db74613bb4eb03deb24465aabfc053edf457ec
         foreach ($cartItems as $barangId => $item) {
             $barang = Barang::find($barangId);
             if (!$barang || !$barang->canBeBorrowed() || $item['quantity'] > $barang->stok_tersedia) {
@@ -157,7 +195,6 @@ class MahasiswaController extends Controller
         }
 
         try {
-            // PERBAIKAN: Validasi stok tersedia
             foreach ($cartItems as $barangId => $item) {
                 $barang = Barang::find($barangId);
 
@@ -167,8 +204,12 @@ class MahasiswaController extends Controller
                     );
                 }
             }
+<<<<<<< HEAD
 
             // Create semua peminjaman
+=======
+            
+>>>>>>> 62db74613bb4eb03deb24465aabfc053edf457ec
             foreach ($cartItems as $barangId => $item) {
                 Peminjaman::create([
                     'user_id' => Auth::id(),
@@ -180,8 +221,12 @@ class MahasiswaController extends Controller
                     'status' => 'pending'
                 ]);
             }
+<<<<<<< HEAD
 
             // Clear session
+=======
+            
+>>>>>>> 62db74613bb4eb03deb24465aabfc053edf457ec
             session()->forget('cart_peminjaman');
 
             return redirect()->route('mahasiswa.riwayat')->with('success',
