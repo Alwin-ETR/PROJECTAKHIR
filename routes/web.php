@@ -4,10 +4,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MahasiswaController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LandingController;
+
+// Landing Page
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 
 // Public Routes
-Route::get('/', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/loginproses', [AuthController::class, 'login'])->name('login.post');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

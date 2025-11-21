@@ -49,7 +49,6 @@
         </div>
     @endif
 
-<<<<<<< HEAD
     <!-- Keranjang Peminjaman -->
     @if(count($cartItems) > 0)
     <div class="card border-warning-blue shadow-sm mb-4">
@@ -68,75 +67,30 @@
                             <h6 class="card-title text-blue-dark">{{ $item['nama'] }}</h6>
                             <p class="card-text text-blue-light mb-2">
                                 <strong>Kode:</strong> {{ $item['kode_barang'] }}<br>
-                                <strong>Jumlah:</strong> {{ $item['quantity'] }}<br>
+                                <strong>Jumlah:</strong>
+                                <span id="quantity-{{ $id }}">{{ $item['quantity'] }}</span><br>
                                 <strong>Status:</strong>
                                 <span class="badge bg-{{ $item['status_badge'] }}-blue">
                                     {{ $item['status_text'] }}
                                 </span>
                             </p>
                             <div class="btn-group">
-                                <form action="{{ route('mahasiswa.cart.update', $id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="input-group input-group-sm">
-                                        <input type="number" name="quantity" value="{{ $item['quantity'] }}"
-                                               min="1" max="{{ $item['max_stok'] }}" class="form-control form-control-sm border-blue">
-                                        <button type="submit" class="btn btn-blue-outline btn-sm">
-                                            <i class="fas fa-sync-alt"></i>
-                                        </button>
-=======
-            <!-- Keranjang Peminjaman -->
-            @if(count($cartItems) > 0)
-            <div class="card mb-4 border-warning">
-                <div class="card-header bg-warning text-dark">
-                    <h5 class="mb-0">
-                        <i class="fas fa-shopping-cart"></i> Keranjang Peminjaman
-                        <span class="badge bg-danger">{{ count($cartItems) }}</span>
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        @foreach($cartItems as $id => $item)
-                        <div class="col-md-6 mb-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h6 class="card-title">{{ $item['nama'] }}</h6>
-                                    <p class="card-text">
-                                        <strong>Kode:</strong> {{ $item['kode_barang'] }}<br>
-                                        <strong>Jumlah:</strong> 
-                                        <span id="quantity-{{ $id }}">{{ $item['quantity'] }}</span><br>
-                                        <strong>Status:</strong>
-                                        <span class="badge bg-{{ $item['status_badge'] }}">
-                                            {{ $item['status_text'] }}
-                                        </span>
-                                    </p>
-                                    <div class="btn-group">
-                                        <div class="input-group input-group-sm">
-                                            <button class="btn btn-outline-secondary" type="button" 
-                                                    onclick="updateQuantity({{ $id }}, -1)">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <input type="number" id="input-{{ $id }}" 
-                                                   value="{{ $item['quantity'] }}" 
-                                                   min="1" max="{{ $item['max_stok'] }}" 
-                                                   class="form-control text-center" 
-                                                   onchange="updateQuantity({{ $id }}, 0, this.value)"
-                                                   style="width: 60px;">
-                                            <button class="btn btn-outline-secondary" type="button" 
-                                                    onclick="updateQuantity({{ $id }}, 1)">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
-                                        </div>
-                                        <form action="{{ route('mahasiswa.cart.remove', $id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
->>>>>>> 62db74613bb4eb03deb24465aabfc053edf457ec
-                                    </div>
-                                </form>
+                                <div class="input-group input-group-sm">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                            onclick="updateQuantity({{ $id }}, -1)">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="number" id="input-{{ $id }}"
+                                            value="{{ $item['quantity'] }}"
+                                            min="1" max="{{ $item['max_stok'] }}"
+                                            class="form-control text-center"
+                                            onchange="updateQuantity({{ $id }}, 0, this.value)"
+                                            style="width: 60px;">
+                                    <button class="btn btn-outline-secondary" type="button"
+                                            onclick="updateQuantity({{ $id }}, 1)">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
                                 <form action="{{ route('mahasiswa.cart.remove', $id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
@@ -467,22 +421,22 @@
 function updateQuantity(itemId, change, customValue = null) {
     const input = document.getElementById('input-' + itemId);
     const quantitySpan = document.getElementById('quantity-' + itemId);
-    
+
     let newQuantity;
-    
+
     if (customValue !== null) {
         newQuantity = parseInt(customValue);
     } else {
         newQuantity = parseInt(input.value) + change;
     }
-    
+
     const maxStock = parseInt(input.max);
     if (newQuantity < 1) newQuantity = 1;
     if (newQuantity > maxStock) newQuantity = maxStock;
-    
+
     input.value = newQuantity;
     quantitySpan.textContent = newQuantity;
-    
+
     fetch(`/mahasiswa/cart/update/${itemId}`, {
         method: 'PUT',
         headers: {
@@ -503,11 +457,12 @@ function updateQuantity(itemId, change, customValue = null) {
     .then(data => {
         if (data.success) {
             showToast('success', data.message || 'Jumlah berhasil diupdate');
-            
+
             if (data.max_stok) {
                 input.max = data.max_stok;
             }
         } else {
+            // Rollback the value if update failed
             input.value = parseInt(input.value) - change;
             quantitySpan.textContent = input.value;
             showToast('error', data.message || 'Terjadi kesalahan');
@@ -515,6 +470,7 @@ function updateQuantity(itemId, change, customValue = null) {
     })
     .catch(error => {
         console.error('Error:', error);
+        // Rollback on network error
         input.value = parseInt(input.value) - change;
         quantitySpan.textContent = input.value;
         showToast('error', 'Terjadi kesalahan saat mengupdate');
@@ -524,12 +480,26 @@ function updateQuantity(itemId, change, customValue = null) {
 // Function untuk show toast notification
 function showToast(type, message) {
     const toast = document.createElement('div');
-    toast.className = `alert alert-${type} alert-dismissible fade show`;
-    toast.innerHTML = `
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    `;
+    // PERBAIKAN: Menggunakan template literal yang benar (backtick)
+    toast.className = `alert alert-danger-blue alert-dismissible fade show`; 
     
+    // Sesuaikan kelas alert berdasarkan type
+    let alertClass = '';
+    if (type === 'success') {
+        alertClass = 'alert-success-blue';
+    } else if (type === 'error') {
+        alertClass = 'alert-danger-blue';
+    } else {
+        alertClass = 'alert-info-blue';
+    }
+    
+    toast.className = `alert ${alertClass} alert-dismissible fade show`;
+
+    toast.innerHTML = `
+        <i class="fas fa-info-circle me-2"></i> ${message}
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+    `;
+
     const container = document.createElement('div');
     container.style.position = 'fixed';
     container.style.top = '20px';
@@ -537,15 +507,16 @@ function showToast(type, message) {
     container.style.zIndex = '9999';
     container.style.minWidth = '300px';
     container.appendChild(toast);
-    
+
     document.body.appendChild(container);
-    
+
     setTimeout(() => {
         if (container.parentNode) {
             container.parentNode.removeChild(container);
         }
-    }, 3000);
+    }, 5000); // Tampilkan 5 detik
 }
+
 
 // Modal detail barang
 function showBarangDetail(barangId) {
@@ -596,7 +567,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const itemId = this.id.replace('input-', '');
             updateQuantity(itemId, 0, this.value);
         });
-        
+
         input.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 const itemId = this.id.replace('input-', '');

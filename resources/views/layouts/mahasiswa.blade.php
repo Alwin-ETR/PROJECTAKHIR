@@ -3,84 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Peminjaman - Mahasiswa</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <title>@yield('title', 'Dashboard Mahasiswa') - SIPINJAM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .sidebar {
-            min-height: 100vh;
-            background-color: #f8f9fa;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .sidebar .nav-link {
-            color: #333;
-            padding: 12px 15px;
-            margin: 2px 0;
-            border-radius: 5px;
-        }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            background-color: #28a745;
-            color: white;
-        }
-        .stat-card {
-            border-radius: 10px;
-            transition: transform 0.2s;
-        }
-        .stat-card:hover {
-            transform: translateY(-3px);
-        }
-        .barang-item {
-            border-left: 4px solid #28a745;
-            transition: all 0.3s;
-        }
-        .barang-item:hover {
-            background-color: #f8f9fa;
-            transform: translateX(5px);
-        }
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <nav class="col-md-3 col-lg-2 d-md-block sidebar">
-                <div class="position-sticky pt-3">
-                    <h5 class="px-3 text-success">Mahasiswa Panel</h5>
-                    <hr>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{ route('mahasiswa.dashboard') }}">
-                                <i class="bi bi-speedometer2"></i> Dashboard
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('mahasiswa.barang.index') }}">
-                                <i class="bi bi-box-seam"></i> Daftar Barang
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('mahasiswa.peminjaman.index') }}">
-                                <i class="bi bi-clipboard-check"></i> Status Peminjaman
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('mahasiswa.barang.terakhir-dilihat') }}">
-                                <i class="bi bi-clock-history"></i> Terakhir Dilihat
-                            </a>
-                        </li>
-                        <li class="nav-item mt-4">
-                            <form action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="nav-link btn btn-link text-start w-100 text-danger">
-                                    <i class="bi bi-box-arrow-right"></i> Logout
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+<body class="bg-gray-50 text-gray-900">
 
+<<<<<<< Updated upstream
             <!-- Main Content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
                 <!-- Header -->
@@ -317,5 +249,45 @@
             simpanKeRiwayat({{ request()->focus }});
         @endif
     </script>
+=======
+<div class="min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r shadow-lg flex flex-col">
+        <div class="p-6 border-b">
+            <div class="font-bold text-xl textaccent mb-2 flex items-center gap-2">
+                <i class="fas fa-user-graduate text-accent"></i>
+                SIPINJAM
+            </div>
+            <div class="text-sm text-gray-500">Mahasiswa Panel</div>
+        </div>
+        <nav class="flex-1 p-4 space-y-1 font-medium">
+            <a href="{{ route('mahasiswa.dashboard') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('mahasiswa.dashboard') ? 'bg-accent text-white' : 'text-gray-700 hover:bg-blue-50' }}">
+                <i class="fas fa-home fa-fw"></i> Dashboard
+            </a>
+            <a href="{{ route('mahasiswa.search') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('mahasiswa.search') ? 'bg-accent text-white' : 'text-gray-700 hover:bg-blue-50' }}">
+                <i class="fas fa-box fa-fw"></i> Daftar Barang
+            </a>
+            <a href="{{ route('mahasiswa.riwayat') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('mahasiswa.riwayat') ? 'bg-accent text-white' : 'text-gray-700 hover:bg-blue-50' }}">
+                <i class="fas fa-history fa-fw"></i> Riwayat Peminjaman
+            </a>
+            <a href="{{ route('mahasiswa.profile') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('mahasiswa.profile') ? 'bg-accent text-white' : 'text-gray-700 hover:bg-blue-50' }}">
+                <i class="fas fa-user fa-fw"></i> Profil Saya
+            </a>
+            <form action="{{ route('logout') }}" method="POST" class="mt-6">
+                @csrf
+                <button type="submit" class="flex items-center gap-3 px-4 py-2 rounded-lg w-full bg-red-50 text-red-600 font-bold hover:bg-red-500 hover:text-white transition">
+                    <i class="fas fa-sign-out-alt fa-fw"></i> Logout
+                </button>
+            </form>
+        </nav>
+    </aside>
+    
+    <!-- Main content -->
+    <main class="flex-1 p-8">
+        @yield('content')
+    </main>
+</div>
+
+>>>>>>> Stashed changes
 </body>
 </html>

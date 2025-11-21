@@ -4,6 +4,7 @@
 
 @section('content')
 <style>
+    /* Styling dari Updated Upstream (untuk tampilan yang lebih modern) */
     body {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
@@ -40,12 +41,12 @@
     }
     .btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 </style>
 
 <div class="admin-content">
-    <!-- Header -->
+    <!-- Header: Menggunakan styling dan teks dari Updated Upstream -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
         <h1 class="h2 text-dark">
             <i class="bi bi-box-seam"></i> Management Barang
@@ -116,8 +117,8 @@
                                 <td>
                                     @if($barang->gambar)
                                         <img src="{{ asset('storage/' . $barang->gambar) }}"
-                                             alt="{{ $barang->nama }}"
-                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+                                                alt="{{ $barang->nama }}"
+                                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
                                     @else
                                         <span class="text-muted">No Image</span>
                                     @endif

@@ -41,15 +41,9 @@
                         <div class="tab-content" id="pills-tabContent">
                             <!-- Login Form -->
                             <div class="tab-pane fade show active" id="pills-login" role="tabpanel">
-<<<<<<< HEAD
-                                <form method="POST" action="{{ route('login.post') }}"> <!-- GUNAKAN ROUTE NAME -->
-                                    @csrf <!-- PASTIKAN INI ADA -->
-
-=======
                                 <form method="POST" action="{{ route('login.post') }}">
                                     @csrf
-                                    
->>>>>>> 62db74613bb4eb03deb24465aabfc053edf457ec
+
                                     @if($errors->any() && $errors->has('email') && !$errors->has('name'))
                                         <div class="alert alert-warning alert-dismissible fade show">
                                             <i class="fas fa-exclamation-circle me-2"></i>
@@ -73,8 +67,8 @@
                                                 <i class="fas fa-envelope"></i>
                                             </span>
                                             <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                                   id="login_email" name="email" value="{{ old('email') }}" required
-                                                   placeholder="email@example.com">
+                                                    id="login_email" name="email" value="{{ old('email') }}" required
+                                                    placeholder="email@example.com">
                                         </div>
                                         @error('email')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -88,8 +82,8 @@
                                                 <i class="fas fa-lock"></i>
                                             </span>
                                             <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                                   id="login_password" name="password" required
-                                                   placeholder="Masukkan password">
+                                                    id="login_password" name="password" required
+                                                    placeholder="Masukkan password">
                                             <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('login_password')">
                                                 <i class="fas fa-eye"></i>
                                             </button>
@@ -110,13 +104,8 @@
                             <!-- Register Form -->
                             <div class="tab-pane fade" id="pills-register" role="tabpanel">
                                 <form method="POST" action="{{ route('register') }}" id="registerForm">
-<<<<<<< HEAD
-                                    @csrf <!-- PASTIKAN INI ADA -->
-
-                                    <!-- rest of register form -->
-=======
                                     @csrf
-                                    
+
                                     @if($errors->any() && ($errors->has('name') || $errors->has('nim') || $errors->has('phone') || $errors->has('email')))
                                         <div class="alert alert-danger alert-dismissible fade show">
                                             <i class="fas fa-exclamation-triangle me-2"></i>
@@ -129,22 +118,22 @@
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="register_name" class="form-label">Nama Lengkap</label>
-                                                <input type="text" class="form-control @error('name') is-invalid @enderror" 
-                                                       id="register_name" name="name" value="{{ old('name') }}" required 
-                                                       placeholder="Nama lengkap">
+                                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                                             id="register_name" name="name" value="{{ old('name') }}" required
+                                                             placeholder="Nama lengkap">
                                                 @error('name')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="mb-3">
                                                 <label for="register_nim" class="form-label">NIM</label>
-                                                <input type="text" class="form-control @error('nim') is-invalid @enderror" 
-                                                       id="register_nim" name="nim" value="{{ old('nim') }}" required 
-                                                       placeholder="12 digit NIM" maxlength="12">
+                                                <input type="text" class="form-control @error('nim') is-invalid @enderror"
+                                                             id="register_nim" name="nim" value="{{ old('nim') }}" required
+                                                             placeholder="12 digit NIM" maxlength="12">
                                                 @error('nim')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
@@ -156,9 +145,9 @@
                                             <span class="input-group-text bg-dark text-white">
                                                 <i class="fas fa-envelope"></i>
                                             </span>
-                                            <input type="email" class="form-control @error('email') is-invalid @enderror" 
-                                                   id="register_email" name="email" value="{{ old('email') }}" required 
-                                                   placeholder="email@student.unej.ac.id">
+                                            <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                                             id="register_email" name="email" value="{{ old('email') }}" required
+                                                             placeholder="email@student.unej.ac.id">
                                         </div>
                                         @error('email')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -171,14 +160,14 @@
                                                 <label for="register_phone" class="form-label">Nomor HP</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-dark text-white">
-                                                        <i class="fas fa-phone"></i>
+                                                         <i class="fas fa-phone"></i>
                                                     </span>
-                                                    <input type="tel" class="form-control @error('phone') is-invalid @enderror" 
-                                                           id="register_phone" name="phone" value="{{ old('phone') }}" required 
-                                                           placeholder="08xxxxxxxxxx">
+                                                    <input type="tel" class="form-control @error('phone') is-invalid @enderror"
+                                                             id="register_phone" name="phone" value="{{ old('phone') }}" required
+                                                             placeholder="08xxxxxxxxxx">
                                                 </div>
                                                 @error('phone')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
@@ -186,15 +175,15 @@
                                             <div class="mb-3">
                                                 <label for="register_password" class="form-label">Password</label>
                                                 <div class="input-group">
-                                                    <input type="password" class="form-control @error('password') is-invalid @enderror" 
-                                                           id="register_password" name="password" required 
-                                                           placeholder="Minimal 6 karakter">
+                                                    <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                                             id="register_password" name="password" required
+                                                             placeholder="Minimal 6 karakter">
                                                     <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('register_password')">
-                                                        <i class="fas fa-eye"></i>
+                                                         <i class="fas fa-eye"></i>
                                                     </button>
                                                 </div>
                                                 @error('password')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
@@ -203,10 +192,10 @@
                                     <div class="mb-3">
                                         <label for="register_password_confirmation" class="form-label">Konfirmasi Password</label>
                                         <div class="input-group">
-                                            <input type="password" class="form-control" id="register_password_confirmation" 
-                                                   name="password_confirmation" required placeholder="Ulangi password">
+                                            <input type="password" class="form-control" id="register_password_confirmation"
+                                                     name="password_confirmation" required placeholder="Ulangi password">
                                             <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('register_password_confirmation')">
-                                                <i class="fas fa-eye"></i>
+                                                 <i class="fas fa-eye"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -221,16 +210,15 @@
                                             <i class="fas fa-user-plus me-2"></i> Daftar Akun Mahasiswa
                                         </button>
                                     </div>
->>>>>>> 62db74613bb4eb03deb24465aabfc053edf457ec
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="text-center mt-4 text-muted">
                     <small>
-                        &copy; 2025 Sistem Peminjaman Inventaris Fasilkom UNEJ. 
+                        &copy; 2025 Sistem Peminjaman Inventaris Fasilkom UNEJ.
                         All rights reserved.
                     </small>
                 </div>
@@ -245,7 +233,7 @@
         function togglePassword(inputId) {
             const input = document.getElementById(inputId);
             const icon = input.parentNode.querySelector('button i');
-            
+
             if (input.type === 'password') {
                 input.type = 'text';
                 icon.classList.remove('fa-eye');
@@ -256,7 +244,7 @@
                 icon.classList.add('fa-eye');
             }
         }
-        
+
         // NIM validation (12 digit)
         document.getElementById('register_nim')?.addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9]/g, '');
@@ -264,19 +252,22 @@
                 this.value = this.value.slice(0, 12);
             }
         });
-        
+
         // Phone number validation
         document.getElementById('register_phone')?.addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9]/g, '');
         });
-        
+
         // Auto switch to register tab if email not found or register errors
         document.addEventListener('DOMContentLoaded', function() {
-            @if(session('show_register') || $errors->has('name') || $errors->has('nim') || $errors->has('phone') || $errors->has('email'))
+            // Kita akan menggunakan PHP untuk menentukan apakah tab register harus aktif
+            const shouldShowRegister = {!! json_encode(session('show_register') || $errors->has('name') || $errors->has('nim') || $errors->has('phone') || $errors->has('email')) !!};
+
+            if (shouldShowRegister) {
                 const registerTab = new bootstrap.Tab(document.getElementById('pills-register-tab'));
                 registerTab.show();
-            @endif
-            
+            }
+
             // Show success message
             @if(session('success'))
                 Swal.fire({
@@ -290,7 +281,7 @@
                 });
             @endif
         });
-        
+
         // Form submission loading state
         document.getElementById('registerForm')?.addEventListener('submit', function() {
             const btn = this.querySelector('button[type="submit"]');
