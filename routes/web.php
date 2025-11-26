@@ -5,20 +5,21 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MahasiswaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\Admin\LaporanController;
 
 // Landing Page
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
-// Public Routes
+// Public 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/loginproses', [AuthController::class, 'login'])->name('login.post');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Authenticated Routes
+// Authenticated 
 Route::middleware(['auth'])->group(function () {
     
-    // Admin Routes
+    // Admin 
     Route::middleware(['admin'])->prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
         
@@ -30,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/barang/{barang}', [AdminController::class, 'barangUpdate'])->name('admin.barang.update');
         Route::delete('/barang/{barang}', [AdminController::class, 'barangDestroy'])->name('admin.barang.destroy');
         
-        // Manajemen Mahasiswa - TAMBAHKAN INI
+        // Manajemen Mahasiswa 
         Route::get('/mahasiswa', [AdminController::class, 'mahasiswaIndex'])->name('admin.mahasiswa.index');
         Route::get('/mahasiswa/{user}/peminjaman', [AdminController::class, 'mahasiswaPeminjaman'])->name('admin.mahasiswa.peminjaman');
         
@@ -39,9 +40,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/peminjaman/{peminjaman}/approve', [AdminController::class, 'approvePeminjaman'])->name('admin.peminjaman.approve');
         Route::post('/peminjaman/{peminjaman}/reject', [AdminController::class, 'rejectPeminjaman'])->name('admin.peminjaman.reject');
         Route::post('/peminjaman/{peminjaman}/complete', [AdminController::class, 'completePeminjaman'])->name('admin.peminjaman.complete');
+
+        Route::get('/peminjaman/laporan', [LaporanController::class, 'formLaporan'])->name('admin.peminjaman.laporan');
+        Route::get('/peminjaman/laporan/download', [LaporanController::class, 'downloadRiwayat'])->name('admin.peminjaman.laporan.download');
     });
     
-    // Mahasiswa Routes
+    // Mahasiswa 
     Route::middleware(['mahasiswa'])->prefix('mahasiswa')->group(function () {
         Route::get('/dashboard', [MahasiswaController::class, 'dashboard'])->name('mahasiswa.dashboard');
         Route::get('/profile', [MahasiswaController::class, 'profile'])->name('mahasiswa.profile');
@@ -54,5 +58,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/pengajuan', [MahasiswaController::class, 'showPengajuanForm'])->name('mahasiswa.pengajuan.form');
         Route::post('/peminjaman/submit', [MahasiswaController::class, 'submitPeminjaman'])->name('mahasiswa.peminjaman.submit');
         Route::get('/riwayat', [MahasiswaController::class, 'riwayat'])->name('mahasiswa.riwayat');
+        Route::post('/peminjaman/{id}/return', [MahasiswaController::class, 'confirmReturn'])->name('mahasiswa.peminjaman.return');
+        Route::get('/peminjaman/{id}/bukti-pdf', [MahasiswaController::class, 'downloadBuktiPDF'])->name('mahasiswa.peminjaman.bukti-pdf');
     });
 });

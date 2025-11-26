@@ -4,191 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard Mahasiswa') - SIPINJAM</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
+        .sidebar {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .sidebar .nav-link {
+            color: #333;
+            padding: 12px 15px;
+            margin: 2px 0;
+            border-radius: 5px;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background-color: #2563EB;
+            color: white;
+        }
+        .stat-card {
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar">
+                <div class="position-sticky pt-3">
+                    <h5 class="px-3 text-primary">
+                        <i class="bi bi-person-circle"></i> Mahasiswa Panel
+                    </h5>
+                    <hr>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('mahasiswa.dashboard') ? 'active' : '' }}" 
+                               href="{{ route('mahasiswa.dashboard') }}">
+                                <i class="bi bi-speedometer2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('mahasiswa.search') ? 'active' : '' }}" 
+                               href="{{ route('mahasiswa.search') }}">
+                                <i class="bi bi-box-seam"></i> Daftar Barang
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('mahasiswa.riwayat') ? 'active' : '' }}" 
+                               href="{{ route('mahasiswa.riwayat') }}">
+                                <i class="bi bi-clock-history"></i> Riwayat Peminjaman
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('mahasiswa.profile') ? 'active' : '' }}" 
+                               href="{{ route('mahasiswa.profile') }}">
+                                <i class="bi bi-person"></i> Profil Saya
+                            </a>
+                        </li>
+                        <li class="nav-item mt-4">
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="nav-link btn btn-link text-start w-100 text-danger">
+                                    <i class="bi bi-box-arrow-right"></i> Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
 
-<<<<<<< Updated upstream
             <!-- Main Content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-                <!-- Header -->
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h1 class="h2 text-success">Sistem Peminjaman - Mahasiswa</h1>
-                    <span class="badge bg-success">Mahasiswa</span>
-                </div>
-
-                <!-- Welcome Section -->
-                <div class="card mb-4">
-                    <div class="card-header bg-success text-white">
-                        <h4 class="mb-0">Selamat Datang, {{ $user->name }}</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5>Informasi Mahasiswa</h5>
-                                <p><strong>NIM:</strong> {{ $user->nim ?? 'Belum diisi' }}</p>
-                                <p><strong>Email:</strong> {{ $user->email }}</p>
-                                <p><strong>Telepon:</strong> {{ $user->phone ?? 'Belum diisi' }}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <h5>Statistik Peminjaman</h5>
-                                <p><strong>Total Peminjaman:</strong> {{ $total_peminjaman }}</p>
-                                <p><strong>Barang Tersedia:</strong> {{ $barang_tersedia }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <!-- Peminjaman Terbaru -->
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100">
-                            <div class="card-header">
-                                <h5 class="mb-0"><i class="bi bi-clock-history"></i> Peminjaman Terbaru</h5>
-                            </div>
-                            <div class="card-body">
-                                @if($peminjaman_terbaru->count() > 0)
-                                    <div class="list-group list-group-flush">
-                                        @foreach($peminjaman_terbaru as $peminjaman)
-                                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <h6 class="mb-1">{{ $peminjaman->barang->nama ?? 'N/A' }}</h6>
-                                                <small class="text-muted">{{ $peminjaman->created_at->format('d/m/Y') }}</small>
-                                            </div>
-                                            <span class="badge bg-{{
-                                                $peminjaman->status == 'disetujui' ? 'success' :
-                                                ($peminjaman->status == 'pending' ? 'warning' : 'danger')
-                                            }}">
-                                                {{ $peminjaman->status }}
-                                            </span>
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                @else
-                                    <p class="text-muted">Belum ada riwayat peminjaman.</p>
-                                    <a href="{{ route('mahasiswa.barang.index') }}" class="btn btn-success btn-sm">
-                                        <i class="bi bi-box-arrow-in-right"></i> Pinjam Barang Pertama
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Barang Popular -->
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100">
-                            <div class="card-header">
-                                <h5 class="mb-0"><i class="bi bi-star"></i> Barang Popular</h5>
-                            </div>
-                            <div class="card-body">
-                                @if($barang_popular->count() > 0)
-                                    <div class="list-group list-group-flush">
-                                        @foreach($barang_popular as $barang)
-                                        <div class="list-group-item barang-item">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <h6 class="mb-1">{{ $barang->nama }}</h6>
-                                                    <small class="text-muted">Kode: {{ $barang->kode_barang }} | Stok: {{ $barang->stok }}</small>
-                                                </div>
-                                                <a href="{{ route('mahasiswa.barang.index') }}?focus={{ $barang->id }}"
-                                                   class="btn btn-outline-success btn-sm">
-                                                    Pinjam
-                                                </a>
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                @else
-                                    <p class="text-muted">Tidak ada barang popular.</p>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Terakhir Dilihat -->
-                @if($terakhir_dilihat->count() > 0)
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="mb-0"><i class="bi bi-clock-history"></i> Barang Terakhir Dilihat</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    @foreach($terakhir_dilihat as $barang)
-                                    <div class="col-md-4 mb-3">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h6 class="card-title">{{ $barang->nama }}</h6>
-                                                <p class="card-text text-muted">
-                                                    <small>Kode: {{ $barang->kode_barang }}</small><br>
-                                                    <small>Stok: {{ $barang->stok }}</small>
-                                                </p>
-                                                <a href="{{ route('mahasiswa.barang.index') }}?focus={{ $barang->id }}"
-                                                   class="btn btn-success btn-sm w-100">
-                                                    Lihat Detail
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endif
-
-                <!-- Quick Actions -->
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="bi bi-lightning"></i> Quick Actions</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-3 mb-2">
-                                <a href="{{ route('mahasiswa.barang.index') }}" class="btn btn-success w-100">
-                                    <i class="bi bi-box-seam"></i><br>
-                                    Lihat Semua Barang
-                                </a>
-                            </div>
-                            <div class="col-md-3 mb-2">
-                                <a href="{{ route('mahasiswa.peminjaman.index') }}" class="btn btn-info w-100">
-                                    <i class="bi bi-clipboard-check"></i><br>
-                                    Status Peminjaman
-                                </a>
-                            </div>
-                            <div class="col-md-3 mb-2">
-                                <a href="{{ route('mahasiswa.barang.terakhir-dilihat') }}" class="btn btn-warning w-100">
-                                    <i class="bi bi-clock-history"></i><br>
-                                    Terakhir Dilihat
-                                </a>
-                            </div>
-                            <div class="col-md-3 mb-2">
-                                <form action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger w-100">
-                                        <i class="bi bi-box-arrow-right"></i><br>
-                                        Logout
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @yield('content')
             </main>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <!-- SweetAlert Notifications -->
     @if(session('success'))
     <script>
         Swal.fire({
@@ -213,8 +121,8 @@
     </script>
     @endif
 
+    <!-- Cookie Helper Functions -->
     <script>
-        // Fungsi helper cookie
         function setCookie(name, value, days) {
             const d = new Date();
             d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -230,64 +138,17 @@
         // Simpan barang yang dilihat ke cookie
         function simpanKeRiwayat(barangId) {
             let riwayat = JSON.parse(getCookie('barang_terakhir_dilihat') || '[]');
-
-            // Hapus jika sudah ada
             riwayat = riwayat.filter(id => id != barangId);
-
-            // Tambahkan ke depan
             riwayat.unshift(barangId);
-
-            // Batasi maksimal 10 item
             riwayat = riwayat.slice(0, 10);
-
-            // Simpan ke cookie (30 hari)
             setCookie('barang_terakhir_dilihat', JSON.stringify(riwayat), 30);
         }
 
-        // Simpan ke riwayat ketika halaman dimuat
         @if(request()->has('focus'))
             simpanKeRiwayat({{ request()->focus }});
         @endif
     </script>
-=======
-<div class="min-h-screen flex">
-    <!-- Sidebar -->
-    <aside class="w-64 bg-white border-r shadow-lg flex flex-col">
-        <div class="p-6 border-b">
-            <div class="font-bold text-xl textaccent mb-2 flex items-center gap-2">
-                <i class="fas fa-user-graduate text-accent"></i>
-                SIPINJAM
-            </div>
-            <div class="text-sm text-gray-500">Mahasiswa Panel</div>
-        </div>
-        <nav class="flex-1 p-4 space-y-1 font-medium">
-            <a href="{{ route('mahasiswa.dashboard') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('mahasiswa.dashboard') ? 'bg-accent text-white' : 'text-gray-700 hover:bg-blue-50' }}">
-                <i class="fas fa-home fa-fw"></i> Dashboard
-            </a>
-            <a href="{{ route('mahasiswa.search') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('mahasiswa.search') ? 'bg-accent text-white' : 'text-gray-700 hover:bg-blue-50' }}">
-                <i class="fas fa-box fa-fw"></i> Daftar Barang
-            </a>
-            <a href="{{ route('mahasiswa.riwayat') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('mahasiswa.riwayat') ? 'bg-accent text-white' : 'text-gray-700 hover:bg-blue-50' }}">
-                <i class="fas fa-history fa-fw"></i> Riwayat Peminjaman
-            </a>
-            <a href="{{ route('mahasiswa.profile') }}" class="flex items-center gap-3 px-4 py-2 rounded-lg transition {{ request()->routeIs('mahasiswa.profile') ? 'bg-accent text-white' : 'text-gray-700 hover:bg-blue-50' }}">
-                <i class="fas fa-user fa-fw"></i> Profil Saya
-            </a>
-            <form action="{{ route('logout') }}" method="POST" class="mt-6">
-                @csrf
-                <button type="submit" class="flex items-center gap-3 px-4 py-2 rounded-lg w-full bg-red-50 text-red-600 font-bold hover:bg-red-500 hover:text-white transition">
-                    <i class="fas fa-sign-out-alt fa-fw"></i> Logout
-                </button>
-            </form>
-        </nav>
-    </aside>
-    
-    <!-- Main content -->
-    <main class="flex-1 p-8">
-        @yield('content')
-    </main>
-</div>
 
->>>>>>> Stashed changes
+    @stack('scripts')
 </body>
 </html>

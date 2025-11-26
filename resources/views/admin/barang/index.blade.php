@@ -1,10 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'Management Barang')
+@section('title', 'Manajemen Barang')
+
+@push('scripts')
+<!-- CDN SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endpush
 
 @section('content')
 <style>
-    /* Styling dari Updated Upstream (untuk tampilan yang lebih modern) */
     body {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
@@ -46,29 +50,41 @@
 </style>
 
 <div class="admin-content">
-    <!-- Header: Menggunakan styling dan teks dari Updated Upstream -->
+    <!-- Header -->
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-        <h1 class="h2 text-dark">
-            <i class="bi bi-box-seam"></i> Management Barang
-        </h1>
+        <h1 class="h2 text-dark"><i class="bi bi-box-seam"></i> Manajemen Inventaris</h1>
         <a href="{{ route('admin.barang.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-circle"></i> Tambah Barang Baru
         </a>
     </div>
 
-    <!-- Notifikasi -->
+    <!-- SweetAlert2 Notification -->
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses!',
+                    text: '{{ session('success') }}',
+                    showConfirmButton: false,
+                    timer: 2200
+                });
+            });
+        </script>
     @endif
 
     @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="bi bi-exclamation-circle"></i> {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: '{{ session('error') }}',
+                    showConfirmButton: false,
+                    timer: 2500
+                });
+            });
+        </script>
     @endif
 
     <!-- Tabel Barang -->
@@ -117,8 +133,8 @@
                                 <td>
                                     @if($barang->gambar)
                                         <img src="{{ asset('storage/' . $barang->gambar) }}"
-                                                alt="{{ $barang->nama }}"
-                                                style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+                                             alt="{{ $barang->nama }}"
+                                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
                                     @else
                                         <span class="text-muted">No Image</span>
                                     @endif

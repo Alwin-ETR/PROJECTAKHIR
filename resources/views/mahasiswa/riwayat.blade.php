@@ -50,15 +50,37 @@
                                             </span>
                                         </td>
                                         <td>
-                                            @if($pinjam->status === 'disetujui')
-                                                <button class="btn btn-success btn-sm" disabled>
-                                                    <i class="fas fa-check"></i> Disetujui
-                                                </button>
-                                            @elseif($pinjam->status === 'pending')
-                                                <button class="btn btn-warning btn-sm" disabled>
-                                                    <i class="fas fa-clock"></i> Menunggu
-                                                </button>
-                                            @endif
+                                            <div class="d-flex gap-2 flex-wrap">
+                                                @if($pinjam->status === 'disetujui')
+                                                    <!-- Tombol Konfirmasi Pengembalian -->
+                                                    <form method="POST" action="{{ route('mahasiswa.peminjaman.return', $pinjam->id) }}" style="display: inline;">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-info btn-sm" 
+                                                                onclick="return confirm('Konfirmasi bahwa Anda telah mengembalikan barang ini?')">
+                                                            <i class="fas fa-undo"></i> Kembalikan
+                                                        </button>
+                                                    </form>
+                                                @elseif($pinjam->status === 'pending')
+                                                    <button class="btn btn-warning btn-sm" disabled>
+                                                        <i class="fas fa-clock"></i> Menunggu
+                                                    </button>
+                                                @elseif($pinjam->status === 'dikembalikan')
+                                                    <button class="btn btn-success btn-sm" disabled>
+                                                        <i class="fas fa-check"></i> Selesai
+                                                    </button>
+                                                @elseif($pinjam->status === 'ditolak')
+                                                    <button class="btn btn-danger btn-sm" disabled>
+                                                        <i class="fas fa-times"></i> Ditolak
+                                                    </button>
+                                                @endif
+                                                
+                                                <!-- Tombol Download Bukti PDF - Selalu Muncul -->
+                                                <a href="{{ route('mahasiswa.peminjaman.bukti-pdf', $pinjam->id) }}" 
+                                                   class="btn btn-secondary btn-sm" 
+                                                   target="_blank">
+                                                    <i class="fas fa-file-pdf"></i> Unduh Bukti
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr>
                                     @endforeach

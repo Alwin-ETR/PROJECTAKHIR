@@ -6,6 +6,8 @@ use App\Models\Barang;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class MahasiswaController extends Controller
 {
@@ -237,5 +239,44 @@ class MahasiswaController extends Controller
         $cartItems = session('cart_peminjaman', []);
 
         return view('mahasiswa.dashboard', compact('barang', 'cartItems'));
+    }
+
+    public function confirmReturn($id) 
+    {
+        $peminjaman = Peminjaman::where('id', $id)
+        ->where('user_id', auth()->id())
+        ->firstOrFail();
+    
+    // Validasi status
+        if ($peminjaman->status !== 'disetujui') {
+        return redirect()->route('mahasiswa.riwayat')
+            ->with('error', 'Peminjaman tidak dapat dikembalikan.');
+    }
+    
+    // Update status dan tanggal pengembalian
+        $peminjaman->status = 'dikembalikan';
+        $peminjaman->tanggal_pengembalian = now()->toDateString(); // Format date, bukan timestamp
+        $peminjaman->save();
+
+        return redirect()->route('mahasiswa.riwayat')
+            ->with('success', 'Pengembalian berhasil dikonfirmasi.');
+    }
+
+    public function downloadBuktiPDF($id)
+    {
+        // Ambil data peminjaman dengan relasi user dan barang
+        $peminjaman = Peminjaman::with('user', 'barang')
+            ->where('id', $id)
+            ->where('user_id', auth()->id()) // Pastikan hanya bisa download milik sendiri
+            ->firstOrFail();
+
+        // Generate PDF
+        $pdf = Pdf::loadView('mahasiswa.bukti-peminjaman-pdf', [
+            'peminjaman' => $peminjaman,
+            'tanggalCetak' => Carbon::now()
+        ]);
+
+        // Download PDF dengan nama file dinamis
+        return $pdf->download('Bukti-Peminjaman-' . $peminjaman->id . '.pdf');
     }
 }
