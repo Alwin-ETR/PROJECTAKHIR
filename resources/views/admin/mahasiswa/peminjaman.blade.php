@@ -1,164 +1,181 @@
 @extends('layouts.admin')
 
-@section('content')
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Riwayat Peminjaman Mahasiswa</h1>
-    <a href="{{ route('admin.mahasiswa.index') }}" class="btn btn-secondary">
-        <i class="fas fa-arrow-left"></i> Kembali
-    </a>
-</div>
+@section('title', 'Riwayat Peminjaman Mahasiswa')
 
-<div class="card">
-    <div class="card-header">
-        <h5 class="card-title mb-0">Data Mahasiswa</h5>
+@section('content')
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <h1 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <i class="bi bi-clock-history"></i>
+            <span>Riwayat Peminjaman Mahasiswa</span>
+        </h1>
     </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-6">
-                <table class="table table-borderless">
-                    <tr>
-                        <th width="30%">NIM</th>
-                        <td>{{ $user->nim }}</td>
-                    </tr>
-                    <tr>
-                        <th>Nama</th>
-                        <td>{{ $user->name }}</td>
-                    </tr>
-                    <tr>
-                        <th>Email</th>
-                        <td>{{ $user->email }}</td>
-                    </tr>
-                    <tr>
-                        <th>Telepon</th>
-                        <td>{{ $user->phone }}</td>
-                    </tr>
-                </table>
-            </div>
-            <div class="col-md-6">
-                <div class="card bg-light">
-                    <div class="card-body text-center">
-                        <h4>{{ $peminjaman->count() }}</h4>
-                        <p class="mb-0">Total Peminjaman</p>
+
+    <!-- Data Mahasiswa -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <div class="px-5 py-3 border-b border-gray-200 bg-gray-50">
+            <h2 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                <i class="bi bi-person-badge"></i>
+                Data Mahasiswa
+            </h2>
+        </div>
+        <div class="p-5">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2">
+                    <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
+                        <div>
+                            <dt class="font-medium text-gray-600">NIM</dt>
+                            <dd class="mt-1">
+                                <span class="inline-flex px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
+                                    {{ $user->nim }}
+                                </span>
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="font-medium text-gray-600">Nama</dt>
+                            <dd class="mt-1 text-gray-800 font-semibold">{{ $user->name }}</dd>
+                        </div>
+                        <div>
+                            <dt class="font-medium text-gray-600">Email</dt>
+                            <dd class="mt-1 text-gray-700">{{ $user->email }}</dd>
+                        </div>
+                        <div>
+                            <dt class="font-medium text-gray-600">Telepon</dt>
+                            <dd class="mt-1 text-gray-700">{{ $user->phone }}</dd>
+                        </div>
+                    </dl>
+                </div>
+                <div>
+                    <div class="rounded-xl border border-blue-100 bg-blue-50 px-4 py-4 text-center">
+                        <p class="text-xs font-semibold text-blue-700 uppercase tracking-wide">Total Peminjaman</p>
+                        <p class="mt-2 text-3xl font-bold text-blue-900">
+                            {{ $peminjaman->count() }}
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="card mt-4">
-    <div class="card-header">
-        <h5 class="card-title mb-0">Riwayat Peminjaman</h5>
-    </div>
-    <div class="card-body">
-        @if($peminjaman->count() > 0)
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Inventaris</th>
-                            <th>Jumlah</th>
-                            <th>Tanggal Pinjam</th>
-                            <th>Tanggal Kembali</th>
-                            <th>Status</th>
-                            <th>Keterlambatan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($peminjaman as $index => $p)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>
-                                <strong>{{ $p->barang->nama }}</strong><br>
-                                <small class="text-muted">Kode: {{ $p->barang->kode_barang }}</small>
-                            </td>
-                            <td>{{ $p->jumlah }}</td>
-                            <td>{{ $p->tanggal_pinjam->format('d/m/Y') }}</td>
-                            <td>{{ $p->tanggal_kembali->format('d/m/Y') }}</td>
-                            <td>
-                                <span class="badge bg-{{ $p->status == 'disetujui' ? 'success' : ($p->status == 'pending' ? 'warning' : 'danger') }}">
-                                    {{ ucfirst($p->status) }}
-                                </span>
-                            </td>
-                            <td>
-                                @if($p->isOverdue())
-                                    @php
-                                        $daysLate = now()->diffInDays($p->tanggal_kembali);
-                                    @endphp
-                                    <span class="badge bg-danger">
-                                        Terlambat {{ $daysLate }} hari
-                                    </span>
-                                @elseif($p->status == 'disetujui' && now()->lessThanOrEqualTo($p->tanggal_kembali))
-                                    @php
-                                        $daysLeft = now()->diffInDays($p->tanggal_kembali, false);
-                                    @endphp
-                                    @if($daysLeft >= 0)
-                                        <span class="badge bg-success">
-                                            {{ $daysLeft }} hari lagi
+    <!-- Riwayat Peminjaman -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <div class="px-5 py-3 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-indigo-600">
+            <h2 class="text-sm font-semibold text-white flex items-center gap-2">
+                <i class="bi bi-clipboard-check"></i>
+                Riwayat Peminjaman
+            </h2>
+        </div>
+        <div class="p-5">
+            @if($peminjaman->count() > 0)
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-4 py-2 text-left font-semibold text-gray-700">#</th>
+                                <th class="px-4 py-2 text-left font-semibold text-gray-700">Inventaris</th>
+                                <th class="px-4 py-2 text-left font-semibold text-gray-700">Jumlah</th>
+                                <th class="px-4 py-2 text-left font-semibold text-gray-700">Tanggal Pinjam</th>
+                                <th class="px-4 py-2 text-left font-semibold text-gray-700">Tanggal Kembali</th>
+                                <th class="px-4 py-2 text-left font-semibold text-gray-700">Status</th>
+                                <th class="px-4 py-2 text-left font-semibold text-gray-700">Keterlambatan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 bg-white">
+                            @foreach($peminjaman as $index => $p)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-2 text-gray-600">{{ $index + 1 }}</td>
+                                    <td class="px-4 py-2">
+                                        <p class="font-semibold text-gray-800">
+                                            {{ $p->barang->nama }}
+                                        </p>
+                                        <p class="text-xs text-gray-500">
+                                            Kode: {{ $p->barang->kode_barang }}
+                                        </p>
+                                    </td>
+                                    <td class="px-4 py-2 text-gray-700">
+                                        {{ $p->jumlah }}
+                                    </td>
+                                    <td class="px-4 py-2 text-gray-600">
+                                        {{ $p->tanggal_pinjam->format('d/m/Y') }}
+                                    </td>
+                                    <td class="px-4 py-2 text-gray-600">
+                                        {{ $p->tanggal_kembali->format('d/m/Y') }}
+                                    </td>
+                                    <td class="px-4 py-2">
+                                        @php
+                                            $statusClass =
+                                                $p->status == 'disetujui' ? 'bg-emerald-100 text-emerald-700' :
+                                                ($p->status == 'pending' ? 'bg-amber-100 text-amber-700' :
+                                                ($p->status == 'dikembalikan' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'));
+                                        @endphp
+                                        <span class="inline-flex px-2 py-1 rounded-full text-xs font-semibold capitalize {{ $statusClass }}">
+                                            {{ $p->status }}
                                         </span>
-                                    @endif
-                                @else
-                                    <span class="text-muted">-</span>
-                                @endif
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @else
-            <div class="text-center py-4">
-                <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
-                <p class="text-muted">Mahasiswa ini belum memiliki riwayat peminjaman.</p>
-            </div>
-        @endif
+                                    </td>
+                                    <td class="px-4 py-2">
+                                        @if($p->isOverdue())
+                                            @php
+                                                $daysLate = now()->diffInDays($p->tanggal_kembali);
+                                            @endphp
+                                            <span class="inline-flex px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+                                                Terlambat {{ $daysLate }} hari
+                                            </span>
+                                        @elseif($p->status == 'disetujui' && now()->lessThanOrEqualTo($p->tanggal_kembali))
+                                            @php
+                                                $daysLeft = now()->diffInDays($p->tanggal_kembali, false);
+                                            @endphp
+                                            @if($daysLeft >= 0)
+                                                <span class="inline-flex px-2 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
+                                                    {{ $daysLeft }} hari lagi
+                                                </span>
+                                            @endif
+                                        @else
+                                            <span class="text-xs text-gray-400">-</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="py-10 text-center text-gray-500">
+                    <i class="fas fa-clipboard-list text-4xl mb-2 text-gray-400"></i>
+                    <p>Mahasiswa ini belum memiliki riwayat peminjaman.</p>
+                </div>
+            @endif
+        </div>
     </div>
-</div>
 
-<!-- Statistik Peminjaman -->
-@if($peminjaman->count() > 0)
-<div class="row mt-4">
-    <div class="col-md-3">
-        <div class="card bg-primary text-white">
-            <div class="card-body">
-                <h5 class="card-title">Disetujui</h5>
-                <p class="card-text display-4">
-                    {{ $peminjaman->where('status', 'disetujui')->count() }}
-                </p>
-            </div>
+    <!-- Statistik Peminjaman -->
+    @if($peminjaman->count() > 0)
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="rounded-xl bg-blue-600 text-white p-4 shadow-sm">
+            <p class="text-sm font-semibold">Disetujui</p>
+            <p class="mt-2 text-3xl font-bold">
+                {{ $peminjaman->where('status', 'disetujui')->count() }}
+            </p>
+        </div>
+        <div class="rounded-xl bg-amber-500 text-white p-4 shadow-sm">
+            <p class="text-sm font-semibold">Pending</p>
+            <p class="mt-2 text-3xl font-bold">
+                {{ $peminjaman->where('status', 'pending')->count() }}
+            </p>
+        </div>
+        <div class="rounded-xl bg-red-600 text-white p-4 shadow-sm">
+            <p class="text-sm font-semibold">Ditolak</p>
+            <p class="mt-2 text-3xl font-bold">
+                {{ $peminjaman->where('status', 'ditolak')->count() }}
+            </p>
+        </div>
+        <div class="rounded-xl bg-sky-600 text-white p-4 shadow-sm">
+            <p class="text-sm font-semibold">Terlambat</p>
+            <p class="mt-2 text-3xl font-bold">
+                {{ $peminjaman->where('status', 'disetujui')->filter(function($p) { return $p->isOverdue(); })->count() }}
+            </p>
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="card bg-warning text-white">
-            <div class="card-body">
-                <h5 class="card-title">Pending</h5>
-                <p class="card-text display-4">
-                    {{ $peminjaman->where('status', 'pending')->count() }}
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card bg-danger text-white">
-            <div class="card-body">
-                <h5 class="card-title">Ditolak</h5>
-                <p class="card-text display-4">
-                    {{ $peminjaman->where('status', 'ditolak')->count() }}
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="card bg-info text-white">
-            <div class="card-body">
-                <h5 class="card-title">Terlambat</h5>
-                <p class="card-text display-4">
-                    {{ $peminjaman->where('status', 'disetujui')->filter(function($p) { return $p->isOverdue(); })->count() }}
-                </p>
-            </div>
-        </div>
-    </div>
+    @endif
 </div>
-@endif
 @endsection

@@ -3,90 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') Admin Panel</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @stack('scripts')
+    <title>@yield('title', 'Dashboard Mahasiswa') - SIPINJAM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
     <style>
-        .sidebar {
-            min-height: 100vh;
-            background-color: #f8f9fa;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        * {
+            font-family: 'Inter', sans-serif;
         }
-        .sidebar .nav-link {
-            color: #333;
-            padding: 12px 15px;
-            margin: 2px 0;
-            border-radius: 5px;
+
+        .sidebar-menu-item {
+            @apply text-gray-100 px-4 py-3 rounded-lg mb-2 transition-all duration-300 cursor-pointer flex items-center gap-3;
+            font-weight: 500;
         }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active {
-            background-color: #007bff;
-            color: white;
+
+        .sidebar-menu-item:hover {
+            @apply bg-white/10 text-white translate-x-1;
         }
+
+        .sidebar-menu-item.active {
+            @apply bg-white/20 text-white border-l-4 border-white;
+        }
+
         .stat-card {
-            border-radius: 10px;
-            transition: transform 0.2s;
-        }
-        .stat-card:hover {
-            transform: translateY(-3px);
+            @apply transition-transform duration-200 hover:shadow-lg hover:-translate-y-1;
         }
     </style>
 </head>
-<body>
-@stack('scripts')
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <nav class="col-md-3 col-lg-2 d-md-block sidebar">
-                <div class="position-sticky pt-3">
-                    <h5 class="px-3 text-primary">Admin Panel</h5>
-                    <hr>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" 
-                               href="{{ route('admin.dashboard') }}">
-                                <i class="bi bi-speedometer2"></i> Dashboard
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.barang.*') ? 'active' : '' }}" 
-                               href="{{ route('admin.barang.index') }}">
-                                <i class="bi bi-box-seam"></i> Manajemen Inventaris
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.mahasiswa.*') ? 'active' : '' }}" 
-                               href="{{ route('admin.mahasiswa.index') }}">
-                                <i class="bi bi-people"></i> Manajemen Mahasiswa
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.peminjaman.*') ? 'active' : '' }}" 
-                               href="{{ route('admin.peminjaman.index') }}">
-                                <i class="bi bi-clipboard-check"></i> Manajemen Peminjaman
-                            </a>
-                        </li>
-                        <li class="nav-item mt-4">
-                            <form action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="nav-link btn btn-link text-start w-100 text-danger">
-                                    <i class="bi bi-box-arrow-right"></i> Logout
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
+<body class="bg-white text-gray-900">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white min-h-screen overflow-y-auto flex-shrink-0 hidden lg:flex lg:flex-col">
+            <!-- Top Content -->
+            <div class="p-6 flex-1 overflow-y-auto">
+                <!-- Logo -->
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold flex items-center gap-2">
+                        <span>ADMIN SIPINJAM</span>
+                    </h2>
                 </div>
-            </nav>
 
-            <!-- Main Content -->
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+                <hr class="border-blue-700 mb-6">
+
+                <!-- Navigation Menu -->
+                <nav class="space-y-1">
+                    <a href="{{ route('admin.dashboard') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
+                        <i class="fas fa-chart-line w-5"></i>
+                        <span>Dashboard</span>
+                    </a>
+
+                    <a href="{{ route('admin.barang.index') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('admin.barang.*') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
+                        <i class="fas fa-boxes-stacked w-5"></i>
+                        <span>Manajemen Inventaris</span>
+                    </a>
+
+                    <a href="{{ route('admin.mahasiswa.index') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('admin.mahasiswa.*') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
+                        <i class="fas fa-user-graduate w-5"></i>
+                        <span>Manajemen Mahasiswa</span>
+                    </a>
+
+                    <a href="{{ route('admin.peminjaman.index') }}"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('admin.peminjaman.*') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
+                        <i class="fas fa-clipboard-check w-5"></i>
+                        <span>Manajemen Peminjaman</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Logout Button -->
+            <div class="p-6 border-t border-blue-700">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-all font-medium">
+                        <i class="fas fa-sign-out-alt w-5"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+
+            <!-- Top Header -->
+            <header class="bg-white border-b-2 border-gray-200 shadow-sm sticky top-0 z-40">
+                <div class="flex justify-between items-center px-8 py-4">
+                    <!-- Left: Empty -->
+                    <div></div>
+
+                    <!-- Right: Profile Only -->
+                    <div class="flex items-center gap-3">
+                        <div class="text-right">
+                            <p class="text-sm font-bold text-gray-900">{{ Auth::user()->name ?? 'Mahasiswa' }}</p>
+                        </div>
+                        <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'User' }}&background=random"
+                            alt="Avatar" class="w-10 h-10 rounded-full border-2 border-blue-400">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="px-8 py-6">
                 @yield('content')
-            </main>
-        </div>
+            </div>
+        </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- SweetAlert Notifications -->
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: '{{ session('success') }}',
+            timer: 3000,
+            showConfirmButton: false,
+            position: 'center'
+        });
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: '{{ session('error') }}',
+            timer: 3000,
+            showConfirmButton: false,
+            position: 'center'
+        });
+    </script>
+    @endif
+
+    <!-- Cookie Helper Functions -->
+    <script>
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
+        }
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        // Simpan barang yang dilihat ke cookie
+        function simpanKeRiwayat(barangId) {
+            let riwayat = JSON.parse(getCookie('barang_terakhir_dilihat') || '[]');
+            riwayat = riwayat.filter(id => id != barangId);
+            riwayat.unshift(barangId);
+            riwayat = riwayat.slice(0, 10);
+            setCookie('barang_terakhir_dilihat', JSON.stringify(riwayat), 30);
+        }
+
+        @if(request()->has('focus'))
+            simpanKeRiwayat({{ request()->focus }});
+        @endif
+    </script>
+
     @stack('scripts')
 </body>
 </html>

@@ -1,93 +1,69 @@
 @extends('layouts.admin')
 
-@section('content')
-<style>
-    body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-    }
-    .admin-content {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border-radius: 15px;
-        padding: 25px;
-        margin: 20px 0;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-    .card {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        border-radius: 12px;
-        border: none;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-    .table {
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-    .table th {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-    }
-    .btn {
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        font-weight: 500;
-    }
-    .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-</style>
+@section('title', 'Data Mahasiswa')
 
-<div class="admin-content">
+@section('content')
+<div class="space-y-6">
     <!-- Header -->
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
-        <h1 class="h2 text-dark">
-            <i class="bi bi-people"></i> Data Mahasiswa
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <h1 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <i class="bi bi-people"></i>
+            <span>Data Mahasiswa</span>
         </h1>
     </div>
 
     <!-- Tabel Mahasiswa -->
-    <div class="card">
-        <div class="card-header text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-            <h5 class="mb-0"><i class="bi bi-list-ul"></i> Daftar Mahasiswa</h5>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <div class="px-5 py-3 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-indigo-600">
+            <h2 class="text-sm font-semibold text-white flex items-center gap-2">
+                <i class="bi bi-list-ul"></i>
+                Daftar Mahasiswa
+            </h2>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
+        <div class="p-5">
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100">
                         <tr>
-                            <th>NIM</th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Telepon</th>
-                            <th>Total Peminjaman</th>
-                            <th>Aksi</th>
+                            <th class="px-4 py-2 text-left font-semibold text-gray-700">NIM</th>
+                            <th class="px-4 py-2 text-left font-semibold text-gray-700">Nama</th>
+                            <th class="px-4 py-2 text-left font-semibold text-gray-700">Email</th>
+                            <th class="px-4 py-2 text-left font-semibold text-gray-700">Telepon</th>
+                            <th class="px-4 py-2 text-left font-semibold text-gray-700">Total Peminjaman</th>
+                            <th class="px-4 py-2 text-left font-semibold text-gray-700">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-gray-100 bg-white">
                         @foreach($mahasiswa as $mhs)
-                        <tr>
-                            <td>
-                                <span class="badge bg-primary fs-6">{{ $mhs->nim }}</span>
-                            </td>
-                            <td class="fw-bold">{{ $mhs->name }}</td>
-                            <td>{{ $mhs->email }}</td>
-                            <td>{{ $mhs->phone }}</td>
-                            <td>
-                                <span class="badge bg-info fs-6">
-                                    {{ $mhs->peminjamans->count() }}
-                                </span>
-                            </td>
-                            <td>
-                                <a href="{{ route('admin.mahasiswa.peminjaman', $mhs->id) }}" class="btn btn-info btn-sm">
-                                    <i class="fas fa-eye"></i> Lihat Peminjaman
-                                </a>
-                            </td>
-                        </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-2">
+                                    <span class="inline-flex px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
+                                        {{ $mhs->nim }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-2 font-semibold text-gray-800">
+                                    {{ $mhs->name }}
+                                </td>
+                                <td class="px-4 py-2 text-gray-600">
+                                    {{ $mhs->email }}
+                                </td>
+                                <td class="px-4 py-2 text-gray-600">
+                                    {{ $mhs->phone }}
+                                </td>
+                                <td class="px-4 py-2">
+                                    <span class="inline-flex px-2 py-1 rounded-full bg-sky-100 text-sky-700 text-xs font-semibold">
+                                        {{ $mhs->peminjamans->count() }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-2">
+                                    <a href="{{ route('admin.mahasiswa.peminjaman', $mhs->id) }}"
+                                       class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-sky-100 text-sky-700 hover:bg-sky-200 transition text-xs font-medium"
+                                       title="Lihat riwayat peminjaman">
+                                        <i class="fas fa-eye text-xs"></i>
+                                        <span class="hidden sm:inline">Lihat Peminjaman</span>
+                                    </a>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>

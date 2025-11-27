@@ -10,19 +10,19 @@ use App\Http\Controllers\Admin\LaporanController;
 // Landing Page
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
-// Public 
+// Public
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/loginproses', [AuthController::class, 'login'])->name('login.post');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Authenticated 
+// Authenticated
 Route::middleware(['auth'])->group(function () {
-    
-    // Admin 
+
+    // Admin
     Route::middleware(['admin'])->prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-        
+
         // CRUD Barang
         Route::get('/barang', [AdminController::class, 'barangIndex'])->name('admin.barang.index');
         Route::get('/barang/create', [AdminController::class, 'barangCreate'])->name('admin.barang.create');
@@ -30,11 +30,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/barang/{barang}/edit', [AdminController::class, 'barangEdit'])->name('admin.barang.edit');
         Route::put('/barang/{barang}', [AdminController::class, 'barangUpdate'])->name('admin.barang.update');
         Route::delete('/barang/{barang}', [AdminController::class, 'barangDestroy'])->name('admin.barang.destroy');
-        
-        // Manajemen Mahasiswa 
+
+        // Manajemen Mahasiswa
         Route::get('/mahasiswa', [AdminController::class, 'mahasiswaIndex'])->name('admin.mahasiswa.index');
         Route::get('/mahasiswa/{user}/peminjaman', [AdminController::class, 'mahasiswaPeminjaman'])->name('admin.mahasiswa.peminjaman');
-        
+
         // Manajemen Peminjaman
         Route::get('/peminjaman', [AdminController::class, 'peminjamanIndex'])->name('admin.peminjaman.index');
         Route::post('/peminjaman/{peminjaman}/approve', [AdminController::class, 'approvePeminjaman'])->name('admin.peminjaman.approve');
@@ -44,10 +44,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/peminjaman/laporan', [LaporanController::class, 'formLaporan'])->name('admin.peminjaman.laporan');
         Route::get('/peminjaman/laporan/download', [LaporanController::class, 'downloadRiwayat'])->name('admin.peminjaman.laporan.download');
     });
-    
-    // Mahasiswa 
+
+    // Mahasiswa
     Route::middleware(['mahasiswa'])->prefix('mahasiswa')->group(function () {
         Route::get('/dashboard', [MahasiswaController::class, 'dashboard'])->name('mahasiswa.dashboard');
+        Route::get('/katalog', [MahasiswaController::class, 'katalog'])->name('mahasiswa.katalog');
         Route::get('/profile', [MahasiswaController::class, 'profile'])->name('mahasiswa.profile');
         Route::get('/barang/{id}', [MahasiswaController::class, 'showBarang'])->name('mahasiswa.barang.show');
         Route::get('/search', [MahasiswaController::class, 'searchBarang'])->name('mahasiswa.search');

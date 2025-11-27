@@ -1,148 +1,129 @@
 @extends('layouts.admin')
 
+@section('title', 'Manajemen Peminjaman')
+
 @section('content')
-<style>
-    body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        min-height: 100vh;
-    }
-    .admin-content {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border-radius: 15px;
-        padding: 25px;
-        margin: 20px 0;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-    .card {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        border-radius: 12px;
-        border: none;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    }
-    .table {
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-    .table th {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-    }
-    .btn {
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        font-weight: 500;
-    }
-    .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-</style>
-
-<div class="admin-content">
-
-    <div class="d-flex justify-content-between align-items-center pt-3 pb-2 mb-3">
-        <h1 class="h2 text-dark">
-            <i class="bi bi-clipboard-check"></i> Manajemen Peminjaman
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <h1 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <i class="bi bi-clipboard-check"></i>
+            <span>Manajemen Peminjaman</span>
         </h1>
 
-        <!-- TOMBOL DOWNLOAD LAPORAN PDF (buka halaman laporan) -->
-        <a href="{{ route('admin.peminjaman.laporan') }}" 
-           class="btn btn-success">
-            <i class="fas fa-file-pdf"></i> Download Laporan PDF
+        <a href="{{ route('admin.peminjaman.laporan') }}"
+           class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition">
+            <i class="fas fa-file-pdf"></i>
+            Download Laporan PDF
         </a>
     </div>
 
+    <!-- Alert -->
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="flex items-center gap-2 px-4 py-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm">
+            <i class="bi bi-check-circle"></i>
+            <span>{{ session('success') }}</span>
         </div>
     @endif
 
     @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="bi bi-exclamation-circle"></i> {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="flex items-center gap-2 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+            <i class="bi bi-exclamation-circle"></i>
+            <span>{{ session('error') }}</span>
         </div>
     @endif
 
-    <div class="card">
-        <div class="card-header text-white"
-             style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-            <h5 class="mb-0"><i class="bi bi-list-ul"></i> Daftar Peminjaman</h5>
+    <!-- Tabel Peminjaman -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <div class="px-5 py-3 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-indigo-600">
+            <h2 class="text-sm font-semibold text-white flex items-center gap-2">
+                <i class="bi bi-list-ul"></i>
+                Daftar Peminjaman
+            </h2>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
+        <div class="p-5">
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100">
                         <tr>
-                            <th>Mahasiswa</th>
-                            <th>Inventaris</th>
-                            <th>Jumlah</th>
-                            <th>Tanggal Pinjam</th>
-                            <th>Tanggal Kembali</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
+                            <th class="px-4 py-2 text-left font-semibold text-gray-700">Mahasiswa</th>
+                            <th class="px-4 py-2 text-left font-semibold text-gray-700">Inventaris</th>
+                            <th class="px-4 py-2 text-left font-semibold text-gray-700">Jumlah</th>
+                            <th class="px-4 py-2 text-left font-semibold text-gray-700">Tanggal Pinjam</th>
+                            <th class="px-4 py-2 text-left font-semibold text-gray-700">Tanggal Kembali</th>
+                            <th class="px-4 py-2 text-left font-semibold text-gray-700">Status</th>
+                            <th class="px-4 py-2 text-left font-semibold text-gray-700">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-gray-100 bg-white">
                         @foreach($peminjaman as $p)
-                        <tr>
-                            <td class="fw-bold">{{ $p->user->name }} ({{ $p->user->nim }})</td>
-                            <td>{{ $p->barang->nama }}</td>
-                            <td>{{ $p->jumlah }}</td>
-                            <td>{{ $p->tanggal_pinjam->format('d/m/Y') }}</td>
-                            <td>{{ $p->tanggal_kembali->format('d/m/Y') }}</td>
-                            <td>
-                                <span class="badge bg-{{ $p->status_badge }} text-capitalize">
-                                    {{ $p->status_text }}
-                                </span>
-                                @if($p->isOverdue())
-                                    <span class="badge bg-danger mt-1">
-                                        <i class="fas fa-exclamation-triangle"></i> Terlambat
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-2">
+                                    <p class="font-semibold text-gray-800">{{ $p->user->name }}</p>
+                                    <p class="text-xs text-gray-500">NIM: {{ $p->user->nim }}</p>
+                                </td>
+                                <td class="px-4 py-2 text-gray-700">
+                                    {{ $p->barang->nama }}
+                                </td>
+                                <td class="px-4 py-2 text-gray-700">
+                                    {{ $p->jumlah }}
+                                </td>
+                                <td class="px-4 py-2 text-gray-600">
+                                    {{ $p->tanggal_pinjam->format('d/m/Y') }}
+                                </td>
+                                <td class="px-4 py-2 text-gray-600">
+                                    {{ $p->tanggal_kembali->format('d/m/Y') }}
+                                </td>
+                                <td class="px-4 py-2">
+                                    <span class="inline-flex px-2 py-1 rounded-full text-xs font-semibold capitalize bg-{{ $p->status_badge == 'success' ? 'emerald' : ($p->status_badge == 'warning' ? 'amber' : ($p->status_badge == 'danger' ? 'red' : 'gray')) }}-100 text-{{ $p->status_badge == 'success' ? 'emerald' : ($p->status_badge == 'warning' ? 'amber' : ($p->status_badge == 'danger' ? 'red' : 'gray')) }}-700">
+                                        {{ $p->status_text }}
                                     </span>
-                                @endif
-                            </td>
-                            <td>
-                                @if($p->status === 'pending')
-                                    <div class="btn-group" role="group">
-                                        <!-- Tombol Setujui -->
-                                        <form method="POST" action="{{ route('admin.peminjaman.approve', $p->id) }}" style="display: inline;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-success btn-sm" 
-                                                    onclick="return confirm('Setujui peminjaman ini?')">
-                                                <i class="fas fa-check"></i> Setujui
-                                            </button>
-                                        </form>
-                                        
-                                        <!-- Tombol Tolak -->
-                                        <form method="POST" action="{{ route('admin.peminjaman.reject', $p->id) }}" style="display: inline;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-danger btn-sm ms-1" 
-                                                    onclick="return confirm('Tolak peminjaman ini?')">
-                                                <i class="fas fa-times"></i> Tolak
-                                            </button>
-                                        </form>
-                                    </div>
-                                @elseif($p->status === 'dikembalikan')
-                                    <span class="badge bg-success">
-                                        <i class="fas fa-check-circle"></i> Selesai
-                                    </span>
-                                @elseif($p->status === 'disetujui')
-                                    <span class="badge bg-primary">
-                                        <i class="fas fa-clock"></i> Sedang Dipinjam
-                                    </span>
-                                @elseif($p->status === 'ditolak')
-                                    <span class="badge bg-secondary">
-                                        <i class="fas fa-ban"></i> Ditolak
-                                    </span>
-                                @endif
-                            </td>
-                        </tr>
+                                    @if($p->isOverdue())
+                                        <span class="inline-flex mt-1 px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+                                            <i class="fas fa-exclamation-triangle mr-1"></i> Terlambat
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-2">
+                                    @if($p->status === 'pending')
+                                        <div class="flex flex-wrap gap-2">
+                                            <form method="POST" action="{{ route('admin.peminjaman.approve', $p->id) }}">
+                                                @csrf
+                                                <button type="submit"
+                                                        onclick="return confirm('Setujui peminjaman ini?')"
+                                                        class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition text-xs font-medium">
+                                                    <i class="fas fa-check text-xs"></i>
+                                                    <span class="hidden sm:inline">Setujui</span>
+                                                </button>
+                                            </form>
+                                            <form method="POST" action="{{ route('admin.peminjaman.reject', $p->id) }}">
+                                                @csrf
+                                                <button type="submit"
+                                                        onclick="return confirm('Tolak peminjaman ini?')"
+                                                        class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition text-xs font-medium">
+                                                    <i class="fas fa-times text-xs"></i>
+                                                    <span class="hidden sm:inline">Tolak</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @elseif($p->status === 'dikembalikan')
+                                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-emerald-100 text-emerald-700 text-xs font-medium">
+                                            <i class="fas fa-check-circle text-xs"></i>
+                                            Selesai
+                                        </span>
+                                    @elseif($p->status === 'disetujui')
+                                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-blue-100 text-blue-700 text-xs font-medium">
+                                            <i class="fas fa-clock text-xs"></i>
+                                            Sedang Dipinjam
+                                        </span>
+                                    @elseif($p->status === 'ditolak')
+                                        <span class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-gray-100 text-gray-700 text-xs font-medium">
+                                            <i class="fas fa-ban text-xs"></i>
+                                            Ditolak
+                                        </span>
+                                    @endif
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>
