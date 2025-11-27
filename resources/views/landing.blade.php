@@ -47,25 +47,25 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="beranda" class="pt-32 pb-20 bg-gradient-to-b from-blue-50 to-white">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
-            <div class="md:w-1/2 mb-10 md:mb-0">
-                <h1 class="text-4xl md:text-5xl font-bold mb-5 leading-tight text-gray-900">
-                    Sistem Manajemen Peminjaman Inventaris di Fasilkom
-                </h1>
-                <p class="text-lg mb-7 text-gray-600">
-                    Platform peminjaman inventaris Fakultas Ilmu Komputer Universitas Jember, memudahkan mahasiswa dan staf mengakses dan mengelola barang kampus secara efisien dan transparan.
-                </p>
-                <a href="{{ route('login') }}" class="bg-gradient-to-r from-accent to-blue-600 text-white inline-block px-8 py-4 rounded-lg font-bold text-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200">
-                    Mulai Pinjam
-                </a>
-            </div>
-            <div class="md:w-1/2 flex justify-center">
-                <img src="{{ asset('storage/images/unej.png') }}" alt="Hero SIPINJAM" class="w-80 h-80 object-contain drop-shadow-2xl rounded-3xl" onerror="this.style.display='none'">
-            </div>
+    <!-- Hero Section dengan Background -->
+    <section id="beranda" class="pt-32 pb-20 bg-cover bg-top" style="background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.8)), url('{{ asset('storage/images/Jember(UNEJ).jpg') }}');">
+    <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
+        <div class="md:w-1/2 mb-10 md:mb-0">
+            <h1 class="text-4xl md:text-5xl font-bold mb-5 leading-tight text-gray-900">
+                Sistem Manajemen Peminjaman Inventaris di Fasilkom
+            </h1>
+            <p class="text-lg mb-7 text-gray-600">
+                Platform peminjaman inventaris Fakultas Ilmu Komputer Universitas Jember, memudahkan mahasiswa dan staf mengakses dan mengelola barang kampus secara efisien dan transparan.
+            </p>
+            <a href="{{ route('login') }}" class="bg-gradient-to-r from-accent to-blue-600 text-white inline-block px-8 py-4 rounded-lg font-bold text-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200">
+                Mulai Pinjam
+            </a>
         </div>
-    </section>
+        <div class="md:w-1/2 flex justify-center">
+            <img src="{{ asset('storage/images/unej.png') }}" alt="Hero SIPINJAM" class="w-80 h-80 object-contain drop-shadow-2xl rounded-3xl" onerror="this.style.display='none'">
+        </div>
+    </div>
+</section>
 
     <!-- Tentang & Fitur -->
     <section id="fitur" class="py-16 bg-gray-50">
