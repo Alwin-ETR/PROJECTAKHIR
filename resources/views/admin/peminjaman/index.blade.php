@@ -2,6 +2,65 @@
 
 @section('title', 'Manajemen Peminjaman')
 
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // SweetAlert untuk approve / reject
+    document.querySelectorAll('.btn-approve, .btn-reject').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const form  = this.closest('form');
+            const type  = this.classList.contains('btn-approve') ? 'approve' : 'reject';
+            const title = type === 'approve' ? 'Setujui peminjaman ini?' : 'Tolak peminjaman ini?';
+            const text  = type === 'approve'
+                ? 'Barang akan dipinjamkan kepada mahasiswa.'
+                : 'Pengajuan peminjaman akan ditolak.';
+
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: type === 'approve' ? 'Ya, setujui' : 'Ya, tolak',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: type === 'approve' ? '#16a34a' : '#dc2626',
+                cancelButtonColor: '#6b7280',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+
+    // SweetAlert untuk flash message
+    @if(session('success'))
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: @json(session('success')),
+        timer: 2200,
+        showConfirmButton: false,
+        position: 'center'
+    });
+    @endif
+
+    @if(session('error'))
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: @json(session('error')),
+        timer: 2500,
+        showConfirmButton: false,
+        position: 'center'
+    });
+    @endif
+});
+</script>
+@endpush
+
 @section('content')
 <div class="space-y-6">
     <!-- Header -->
@@ -17,21 +76,6 @@
             Download Laporan PDF
         </a>
     </div>
-
-    <!-- Alert -->
-    @if(session('success'))
-        <div class="flex items-center gap-2 px-4 py-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm">
-            <i class="bi bi-check-circle"></i>
-            <span>{{ session('success') }}</span>
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="flex items-center gap-2 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
-            <i class="bi bi-exclamation-circle"></i>
-            <span>{{ session('error') }}</span>
-        </div>
-    @endif
 
     <!-- Tabel Peminjaman -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200">
@@ -89,18 +133,16 @@
                                         <div class="flex flex-wrap gap-2">
                                             <form method="POST" action="{{ route('admin.peminjaman.approve', $p->id) }}">
                                                 @csrf
-                                                <button type="submit"
-                                                        onclick="return confirm('Setujui peminjaman ini?')"
-                                                        class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition text-xs font-medium">
+                                                <button type="button"
+                                                        class="btn-approve inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition text-xs font-medium">
                                                     <i class="fas fa-check text-xs"></i>
                                                     <span class="hidden sm:inline">Setujui</span>
                                                 </button>
                                             </form>
                                             <form method="POST" action="{{ route('admin.peminjaman.reject', $p->id) }}">
                                                 @csrf
-                                                <button type="submit"
-                                                        onclick="return confirm('Tolak peminjaman ini?')"
-                                                        class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition text-xs font-medium">
+                                                <button type="button"
+                                                        class="btn-reject inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition text-xs font-medium">
                                                     <i class="fas fa-times text-xs"></i>
                                                     <span class="hidden sm:inline">Tolak</span>
                                                 </button>
