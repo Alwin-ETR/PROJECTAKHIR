@@ -5,75 +5,93 @@
     <title>{{ $title }}</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            font-size: 11px;
-            color: #333;
-            margin: 28px;
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+        color: #000;
+        margin: 28px;
+        background: #fff;
         }
+
         h1 {
             text-align: center;
-            margin-bottom: 0;
-            font-size: 20px;
+            margin-bottom: 2px;
+            font-size: 18px;
             font-weight: bold;
             letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
+
         .subtitle {
             text-align: center;
-            font-size: 13px;
-            margin-bottom: 20px;
-            color: #666;
-        }
-        .info-box {
-            margin-bottom: 20px;
-            padding: 10px;
-            background: #f4f7fa;
-            border-radius: 8px;
             font-size: 11px;
+            margin-bottom: 18px;
         }
+
+        .info-box {
+            margin-bottom: 16px;
+            padding: 8px 10px;
+            border: 1px solid #000;
+            border-radius: 0;
+            font-size: 11px;
+            background: #fff;
+        }
+
         .info-box strong {
-            color: #2e86de;
+            font-weight: bold;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 8px;
             box-sizing: border-box;
         }
+
         th, td {
-            border: 1px solid #bfc9ca;
-            padding: 8px 6px;
+            border: 1px solid #000;
+            padding: 6px 4px;
             font-size: 10px;
             word-break: break-word;
         }
+
         th {
-            background: #667eea;
-            color: #fff;
             text-align: center;
             font-weight: bold;
-            letter-spacing: 0.5px;
+            background: #f2f2f2;
         }
-        tr:nth-child(even) { background: #f5f7fa; }
+
+        tr:nth-child(even) {
+            background: #fafafa;
+        }
+
         .badge {
             display: inline-block;
-            padding: 2px 8px;
-            border-radius: 7px;
-            color: #fff;
+            padding: 2px 6px;
+            border-radius: 2px;
             font-size: 9px;
-            min-width: 65px;
+            min-width: 60px;
             text-align: center;
-            font-weight: 500;
+            border: 1px solid #000;
+            text-transform: uppercase;
+            background: #fff;
+            color: #000;
         }
-        .badge-success { background: #27ae60; }
-        .badge-warning { background: #f39c12; }
-        .badge-danger { background: #c0392b; }
-        .badge-primary { background: #2980b9; }
+
+        /* Semua status tampil hitam-putih saja */
+        .badge-success,
+        .badge-warning,
+        .badge-danger,
+        .badge-primary {
+            background: #fff;
+            color: #000;
+        }
+
         .footer {
-            margin-top: 25px;
-            border-top: 2px solid #eee;
-            font-size: 10px;
-            color: #95a5a6;
+            margin-top: 22px;
+            border-top: 1px solid #000;
+            font-size: 9px;
             text-align: center;
-            padding-top: 10px;
+            padding-top: 6px;
         }
     </style>
 </head>

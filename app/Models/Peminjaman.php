@@ -12,15 +12,21 @@ class Peminjaman extends Model
     protected $table = 'peminjamans';
 
     protected $fillable = [
-        'user_id', 'barang_id', 'jumlah', 'tanggal_pinjam', 
-        'tanggal_kembali', 'tanggal_pengembalian', 'status', 
-        'alasan', 'catatan_admin'
+        'user_id', 
+        'barang_id', 
+        'jumlah', 
+        'tanggal_pinjam', 
+        'tanggal_kembali', 
+        'tanggal_pengembalian', 
+        'status', 
+        'alasan', 
+        'catatan_admin'
     ];
 
     protected $casts = [
-        'tanggal_pinjam' => 'date',
-        'tanggal_kembali' => 'date',
-        'tanggal_pengembalian' => 'date',
+        'tanggal_pinjam' => 'datetime',
+        'tanggal_kembali' => 'datetime',
+        'tanggal_pengembalian' => 'datetime',
     ];
 
     public function user()
@@ -33,9 +39,6 @@ class Peminjaman extends Model
         return $this->belongsTo(Barang::class);
     }
 
-    /**
-     * Check if borrowing is overdue
-     */
     public function isOverdue()
     {
         return $this->status === 'disetujui' && 
@@ -43,30 +46,26 @@ class Peminjaman extends Model
                !$this->tanggal_pengembalian;
     }
 
-    /**
-     * Get status badge color
-     */
     public function getStatusBadgeAttribute()
     {
         $statuses = [
             'pending' => 'warning',
             'disetujui' => 'success',
             'ditolak' => 'danger',
+            'menunggu_verifikasi' => 'orange',
             'dikembalikan' => 'info'
         ];
 
         return $statuses[$this->status] ?? 'secondary';
     }
 
-    /**
-     * Get status text
-     */
     public function getStatusTextAttribute()
     {
         $statuses = [
             'pending' => 'Menunggu',
             'disetujui' => 'Disetujui',
             'ditolak' => 'Ditolak',
+            'menunggu_verifikasi' => 'Menunggu Verifikasi',
             'dikembalikan' => 'Dikembalikan'
         ];
 

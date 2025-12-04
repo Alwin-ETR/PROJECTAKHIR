@@ -20,7 +20,7 @@
                     <tr>
                         <td class="px-4 py-3 w-40 font-semibold text-gray-600">Kode Barang</td>
                         <td class="px-4 py-3">
-                            de class="inline-block px-2 py-1 rounded bg-gray-100 text-gray-800 text-xs">
+                            <code class="inline-block px-2 py-1 rounded bg-gray-100 text-gray-800 text-xs">
                                 {{ $barang->kode_barang }}
                             </code>
                         </td>

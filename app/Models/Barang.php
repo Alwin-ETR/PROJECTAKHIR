@@ -23,9 +23,6 @@ class Barang extends Model
         return $this->hasMany(Peminjaman::class);
     }
 
-    /**
-     * Hitung stok tersedia yang benar
-     */
     public function getStokTersediaAttribute()
     {
         if ($this->status === 'perbaikan') {
@@ -33,7 +30,6 @@ class Barang extends Model
         }
 
         try {
-            // Hitung total yang sedang dipinjam (status disetujui)
             $totalDipinjam = $this->peminjamans()
                 ->where('status', 'disetujui')
                 ->sum('jumlah');
@@ -47,25 +43,16 @@ class Barang extends Model
         }
     }
 
-    /**
-     * Cek apakah bisa dipinjam
-     */
     public function getIsAvailableAttribute()
     {
         return $this->stok_tersedia > 0 && $this->status === 'tersedia';
     }
 
-    /**
-     * Method untuk peminjaman
-     */
     public function canBeBorrowed()
     {
         return $this->is_available;
     }
 
-    /**
-     * Get status badge color
-     */
     public function getStatusBadgeAttribute()
     {
         $statuses = [
@@ -77,9 +64,6 @@ class Barang extends Model
         return $statuses[$this->status] ?? 'secondary';
     }
 
-    /**
-     * Get status text
-     */
     public function getStatusTextAttribute()
     {
         $statuses = [
@@ -91,17 +75,11 @@ class Barang extends Model
         return $statuses[$this->status] ?? 'Tidak Diketahui';
     }
 
-    /**
-     * Scope for available items
-     */
     public function scopeTersedia($query)
     {
         return $query->where('status', '!=', 'perbaikan');
     }
 
-    /**
-     * Scope for search
-     */
     public function scopeSearch($query, $keyword)
     {
         return $query->where('nama', 'like', "%{$keyword}%")
@@ -109,9 +87,6 @@ class Barang extends Model
                     ->orWhere('deskripsi', 'like', "%{$keyword}%");
     }
 
-    /**
-     * Get image URL or placeholder
-     */
     public function getImageUrlAttribute()
     {
         if ($this->gambar && file_exists(storage_path('app/public/' . $this->gambar))) {
@@ -120,9 +95,6 @@ class Barang extends Model
         return asset('images/placeholder-item.png');
     }
 
-    /**
-     * Get short description
-     */
     public function getDeskripsiSingkatAttribute()
     {
         return $this->deskripsi ? Str::limit($this->deskripsi, 100) : 'Tidak ada deskripsi';

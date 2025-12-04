@@ -5,126 +5,107 @@
     <title>Bukti Peminjaman</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        body { 
-            font-family: 'Inter', Arial, sans-serif;
-            color: #333;
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #000;
             background: #fff;
-            line-height: 1.6;
+            line-height: 1.5;
+            font-size: 12px;
         }
-        
+
         .container {
-            padding: 40px;
+            padding: 32px;
             max-width: 800px;
             margin: 0 auto;
         }
-        
+
         .header {
             text-align: center;
-            border-bottom: 4px solid #0d6efd;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #000;
         }
-        
+
         .header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #0d6efd;
-            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
         }
-        
+
         .header p {
-            font-size: 12px;
-            color: #666;
+            font-size: 11px;
         }
-        
+
         .tanggal-cetak {
             text-align: right;
-            margin-bottom: 20px;
-            font-size: 12px;
-            color: #666;
+            margin-bottom: 16px;
+            font-size: 11px;
         }
-        
+
         .section {
-            margin-bottom: 30px;
+            margin-bottom: 18px;
         }
-        
+
         .section-title {
-            background: #0d6efd;
-            color: white;
-            padding: 10px 15px;
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 15px;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 15px;
+            margin-bottom: 4px;
         }
-        
+
         table tr {
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #ccc;
         }
-        
+
         table td {
-            padding: 10px;
-            font-size: 13px;
+            padding: 6px 4px;
+            vertical-align: top;
         }
-        
+
         table td:first-child {
-            font-weight: 600;
-            width: 35%;
-            background: #f8f9fa;
-            color: #333;
+            width: 32%;
+            font-weight: bold;
         }
-        
-        table td:last-child {
-            color: #555;
-        }
-        
+
         .badge {
             display: inline-block;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 12px;
+            padding: 3px 6px;
+            border: 1px solid #000;
+            border-radius: 2px;
+            font-size: 10px;
+            font-weight: normal;
+            text-transform: uppercase;
         }
-        
-        .badge-success {
-            background: #198754;
-            color: white;
-        }
-        
-        .badge-pending {
-            background: #ffc107;
-            color: black;
-        }
-        
-        .badge-danger {
-            background: #dc3545;
-            color: white;
-        }
-        
+
+        /* Semua status hitam-putih saja */
+        .badge-success,
+        .badge-pending,
+        .badge-danger,
         .badge-info {
-            background: #0dcaf0;
-            color: black;
+            background: #fff;
+            color: #000;
         }
-        
+
         .footer {
-            margin-top: 50px;
+            margin-top: 32px;
             text-align: center;
-            font-size: 11px;
-            color: #999;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
+            font-size: 10px;
+            border-top: 1px solid #000;
+            padding-top: 8px;
         }
     </style>
 </head>
@@ -238,7 +219,7 @@
 
         <!-- Footer -->
         <div class="footer">
-            <p>&copy; 2025 SIPINJAM - Fasilkom UNEJ</p>
+            <p>&copy; 2025 SIPINJAM - Fakultas Ilmu Komputer Universitas Jember</p>
         </div>
     </div>
 </body>

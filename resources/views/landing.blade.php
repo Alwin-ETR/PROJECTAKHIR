@@ -47,7 +47,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section dengan Background -->
+    {{-- Hero Section  --}}
     <section id="beranda" class="pt-32 pb-20 bg-cover bg-top" style="background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.8)), url('{{ asset('storage/images/Jember(UNEJ).jpg') }}');">
     <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
         <div class="md:w-1/2 mb-10 md:mb-0">

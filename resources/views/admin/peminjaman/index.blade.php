@@ -6,25 +6,41 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // SweetAlert untuk approve / reject
-    document.querySelectorAll('.btn-approve, .btn-reject').forEach(function (btn) {
+    // SweetAlert untuk approve / reject / verifikasi kembali
+    document.querySelectorAll('.btn-approve, .btn-reject, .btn-verifikasi').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
             e.preventDefault();
             const form  = this.closest('form');
-            const type  = this.classList.contains('btn-approve') ? 'approve' : 'reject';
-            const title = type === 'approve' ? 'Setujui peminjaman ini?' : 'Tolak peminjaman ini?';
-            const text  = type === 'approve'
-                ? 'Barang akan dipinjamkan kepada mahasiswa.'
-                : 'Pengajuan peminjaman akan ditolak.';
+            const type  = this.classList.contains('btn-approve') ? 'approve' : 
+                          this.classList.contains('btn-reject') ? 'reject' : 'verifikasi';
+            
+            let title, text, confirmText, confirmColor;
+            
+            if (type === 'approve') {
+                title = 'Setujui peminjaman ini?';
+                text = 'Barang akan dipinjamkan kepada mahasiswa.';
+                confirmText = 'Ya, setujui';
+                confirmColor = '#16a34a';
+            } else if (type === 'reject') {
+                title = 'Tolak peminjaman ini?';
+                text = 'Pengajuan peminjaman akan ditolak.';
+                confirmText = 'Ya, tolak';
+                confirmColor = '#dc2626';
+            } else if (type === 'verifikasi') {
+                title = 'Verifikasi pengembalian barang?';
+                text = 'Konfirmasi bahwa barang telah diterima dari mahasiswa.';
+                confirmText = 'Ya, verifikasi';
+                confirmColor = '#0891b2';
+            }
 
             Swal.fire({
                 title: title,
                 text: text,
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: type === 'approve' ? 'Ya, setujui' : 'Ya, tolak',
+                confirmButtonText: confirmText,
                 cancelButtonText: 'Batal',
-                confirmButtonColor: type === 'approve' ? '#16a34a' : '#dc2626',
+                confirmButtonColor: confirmColor,
                 cancelButtonColor: '#6b7280',
                 reverseButtons: true,
             }).then((result) => {
@@ -119,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     {{ $p->tanggal_kembali->format('d/m/Y') }}
                                 </td>
                                 <td class="px-4 py-2">
-                                    <span class="inline-flex px-2 py-1 rounded-full text-xs font-semibold capitalize bg-{{ $p->status_badge == 'success' ? 'emerald' : ($p->status_badge == 'warning' ? 'amber' : ($p->status_badge == 'danger' ? 'red' : 'gray')) }}-100 text-{{ $p->status_badge == 'success' ? 'emerald' : ($p->status_badge == 'warning' ? 'amber' : ($p->status_badge == 'danger' ? 'red' : 'gray')) }}-700">
+                                    <span class="inline-flex px-2 py-1 rounded-full text-xs font-semibold capitalize bg-{{ $p->status_badge == 'success' ? 'emerald' : ($p->status_badge == 'warning' ? 'amber' : ($p->status_badge == 'orange' ? 'orange' : ($p->status_badge == 'danger' ? 'red' : 'gray'))) }}-100 text-{{ $p->status_badge == 'success' ? 'emerald' : ($p->status_badge == 'warning' ? 'amber' : ($p->status_badge == 'orange' ? 'orange' : ($p->status_badge == 'danger' ? 'red' : 'gray'))) }}-700">
                                         {{ $p->status_text }}
                                     </span>
                                     @if($p->isOverdue())
@@ -148,6 +164,15 @@ document.addEventListener('DOMContentLoaded', function () {
                                                 </button>
                                             </form>
                                         </div>
+                                    @elseif($p->status === 'menunggu_verifikasi')
+                                        <form method="POST" action="{{ route('admin.peminjaman.verifikasi-kembali', $p->id) }}">
+                                            @csrf
+                                            <button type="button"
+                                                    class="btn-verifikasi inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-cyan-100 text-cyan-700 hover:bg-cyan-200 transition text-xs font-medium">
+                                                <i class="fas fa-check-double text-xs"></i>
+                                                <span class="hidden sm:inline">Verifikasi</span>
+                                            </button>
+                                        </form>
                                     @elseif($p->status === 'dikembalikan')
                                         <span class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-emerald-100 text-emerald-700 text-xs font-medium">
                                             <i class="fas fa-check-circle text-xs"></i>

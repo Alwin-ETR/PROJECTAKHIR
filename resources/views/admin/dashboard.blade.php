@@ -10,18 +10,6 @@
             <h1 class="text-2xl font-bold text-gray-800">Admin Panel</h1>
             <p class="text-sm text-gray-500">Ringkasan status inventaris dan peminjaman</p>
         </div>
-        <div class="flex gap-2">
-            <a href="{{ route('admin.barang.create') }}"
-               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition">
-                <i class="bi bi-plus-circle"></i>
-                Tambah Barang
-            </a>
-            <a href="{{ route('admin.barang.index') }}"
-               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-blue-600 text-blue-600 text-sm font-medium hover:bg-blue-50 transition">
-                <i class="bi bi-list"></i>
-                Lihat Semua Barang
-            </a>
-        </div>
     </div>
 
     <!-- Stats Cards -->
@@ -131,7 +119,7 @@
                                             ($peminjaman->status == 'dikembalikan' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'));
                                     @endphp
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold capitalize {{ $badgeClass }}">
-                                        {{ $peminjaman->status }}
+                                        {{ $peminjaman->status_text }}
                                     </span>
                                 </td>
                             </tr>

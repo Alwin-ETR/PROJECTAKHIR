@@ -18,7 +18,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    // PASTIKAN RELASI INI ADA
     public function peminjamans()
     {
         return $this->hasMany(Peminjaman::class);

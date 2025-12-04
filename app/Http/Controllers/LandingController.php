@@ -3,16 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Barang; // pastikan model Barang sudah dibuat
+use App\Models\Barang; 
 
 class LandingController extends Controller
 {
     public function index()
     {
-        // Ambil data barang (misal inventaris yang tersedia)
-        $barangList = Barang::where('status', 'tersedia')->get(); // atau bisa juga: all(), paginate(), dsb
-
-        // Kirim ke landing.blade.php
+        $barangList = Barang::where('status', 'tersedia')->get(); 
         return view('landing', compact('barangList'));
     }
 }

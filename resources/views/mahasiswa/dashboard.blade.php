@@ -13,7 +13,7 @@
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <!-- Total Peminjaman -->
-        <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6">
+        <div class="bg-linear-to-br from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-blue-100 text-sm mb-1">Total Peminjaman</p>
@@ -23,19 +23,19 @@
             </div>
         </div>
 
-        <!-- Sedang Dipinjam -->
-        <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-xl shadow-lg p-6">
+        <!-- Sedang Dipinjam (pakai count baru dari controller) -->
+        <div class="bg-linear-to-br from-amber-500 to-amber-600 text-white rounded-xl shadow-lg p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-amber-100 text-sm mb-1">Sedang Dipinjam</p>
-                    <h3 class="text-3xl font-bold">{{ $peminjamanAktif ?? 0 }}</h3>
+                    <h3 class="text-3xl font-bold">{{ $peminjamanAktifCount ?? 0 }}</h3>
                 </div>
                 <i class="fas fa-clock text-5xl opacity-20"></i>
             </div>
         </div>
 
         <!-- Sudah Dikembalikan -->
-        <div class="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-xl shadow-lg p-6">
+        <div class="bg-linear-to-br from-green-500 to-green-600 text-white rounded-xl shadow-lg p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-green-100 text-sm mb-1">Sudah Dikembalikan</p>
@@ -80,6 +80,36 @@
             </button>
         </div>
     @endif
+
+    {{-- ========== NEW: Pengingat tenggat peminjaman aktif ========== --}}
+    @if(isset($peminjamanAktif) && $peminjamanAktif->count())
+        @foreach($peminjamanAktif as $pinjam)
+            @php $sisa = $pinjam->sisa_hari ?? null; @endphp
+
+            @if($sisa !== null)
+                @if($sisa < 0)
+                    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-2">
+                        <p class="font-semibold">
+                            {{ $pinjam->barang->nama ?? 'Barang' }} sudah terlambat {{ abs($sisa) }} hari.
+                        </p>
+                        <p class="text-xs text-red-600">
+                            Tenggat: {{ $pinjam->tanggal_kembali->format('d/m/Y H:i') }}
+                        </p>
+                    </div>
+                @elseif($sisa <= 3)
+                    <div class="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-lg mb-2">
+                        <p class="font-semibold">
+                            {{ $pinjam->barang->nama ?? 'Barang' }} jatuh tempo {{ $sisa }} hari lagi.
+                        </p>
+                        <p class="text-xs text-amber-600">
+                            Tenggat: {{ $pinjam->tanggal_kembali->format('d/m/Y H:i') }}
+                        </p>
+                    </div>
+                @endif
+            @endif
+        @endforeach
+    @endif
+    {{-- ========== END NEW ========== --}}
 
     <!-- Quick Actions -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

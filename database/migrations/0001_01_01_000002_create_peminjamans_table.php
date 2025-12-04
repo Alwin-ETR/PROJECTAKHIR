@@ -16,7 +16,8 @@ return new class extends Migration
             $table->date('tanggal_pinjam');
             $table->date('tanggal_kembali');
             $table->date('tanggal_pengembalian')->nullable();
-            $table->enum('status', ['pending', 'disetujui', 'ditolak', 'dikembalikan'])->default('pending');
+            // $table->enum('status', ['pending', 'disetujui', 'ditolak', 'menunggu_verifikasi', 'dikembalikan'])->default('pending');
+            $table->string('status', 100)->default('pending');
             $table->text('alasan')->nullable();
             $table->text('catatan_admin')->nullable();
             $table->timestamps();

@@ -1,8 +1,60 @@
 @extends('layouts.mahasiswa')
 
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.btn-return-barang').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const form = this.closest('form');
+            const barangNama = this.getAttribute('data-barang');
+
+            Swal.fire({
+                title: 'Konfirmasi Pengembalian',
+                text: 'Apakah Anda yakin telah mengembalikan ' + barangNama + '?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Kembalikan',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#3b82f6',
+                cancelButtonColor: '#6b7280',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+
+    @if(session('success'))
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: @json(session('success')),
+        timer: 2200,
+        showConfirmButton: false,
+        position: 'center'
+    });
+    @endif
+
+    @if(session('error'))
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: @json(session('error')),
+        timer: 2500,
+        showConfirmButton: false,
+        position: 'center'
+    });
+    @endif
+});
+</script>
+@endpush
+
 @section('content')
 <div class="min-h-screen bg-gray-50">
-    <!-- Title Section -->
     <div class="mb-8">
         <h1 class="text-3xl font-bold text-gray-800 mb-2">Riwayat Peminjaman</h1>
         <p class="text-gray-500">Kelola semua peminjaman barang Anda</p>
@@ -32,6 +84,7 @@
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Tanggal Kembali</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Status</th>
                                 <th class="px-4 py-3 text-left font-semibold text-gray-700">Aksi</th>
+                                <th class="px-4 py-3 text-left font-semibold text-gray-700">Download</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
@@ -51,12 +104,13 @@
                                             'pending' => ['bg' => 'bg-amber-100', 'text' => 'text-amber-800', 'icon' => 'fa-clock'],
                                             'disetujui' => ['bg' => 'bg-green-100', 'text' => 'text-green-800', 'icon' => 'fa-check-circle'],
                                             'ditolak' => ['bg' => 'bg-red-100', 'text' => 'text-red-800', 'icon' => 'fa-times-circle'],
+                                            'menunggu_verifikasi' => ['bg' => 'bg-orange-100', 'text' => 'text-orange-800', 'icon' => 'fa-hourglass-half'],
                                             'dikembalikan' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-800', 'icon' => 'fa-check-double']
                                         ];
                                         $config = $statusConfig[$pinjam->status] ?? ['bg' => 'bg-gray-100', 'text' => 'text-gray-800', 'icon' => 'fa-question-circle'];
                                     @endphp
                                     <span class="inline-block {{ $config['bg'] }} {{ $config['text'] }} px-3 py-1 rounded-full text-xs font-semibold capitalize">
-                                        <i class="fas {{ $config['icon'] }} mr-1"></i>{{ $pinjam->status }}
+                                        <i class="fas {{ $config['icon'] }} mr-1"></i>{{ $pinjam->status_text }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-3">
@@ -66,14 +120,14 @@
                                             <form method="POST" action="{{ route('mahasiswa.peminjaman.return', $pinjam->id) }}" class="inline">
                                                 @csrf
                                                 <button type="submit"
-                                                        class="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-xs font-medium"
-                                                        onclick="return confirm('Konfirmasi bahwa Anda telah mengembalikan barang ini?')">
+                                                        class="btn-return-barang px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-xs font-medium"
+                                                        data-barang="{{ $pinjam->barang->nama }}">
                                                     <i class="fas fa-undo"></i> Kembalikan
                                                 </button>
                                             </form>
-                                        @elseif($pinjam->status === 'pending')
+                                        @elseif($pinjam->status === 'menunggu_verifikasi')
                                             <button class="px-3 py-1 bg-amber-100 text-amber-800 rounded-lg cursor-not-allowed text-xs font-medium" disabled>
-                                                <i class="fas fa-clock"></i> Menunggu
+                                                <i class="fas fa-clock"></i> Menunggu Verifikasi
                                             </button>
                                         @elseif($pinjam->status === 'dikembalikan')
                                             <button class="px-3 py-1 bg-green-100 text-green-800 rounded-lg cursor-not-allowed text-xs font-medium" disabled>
@@ -84,15 +138,24 @@
                                                 <i class="fas fa-times"></i> Ditolak
                                             </button>
                                         @endif
-
-                                        <!-- Tombol Download Bukti PDF -->
-                                        <a href="{{ route('mahasiswa.peminjaman.bukti-pdf', $pinjam->id) }}"
-                                           class="px-3 py-1 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition text-xs font-medium"
-                                           target="_blank">
-                                            <i class="fas fa-file-pdf"></i> Bukti
-                                        </a>
                                     </div>
                                 </td>
+                                <td class="px-4 py-3">
+                                    <a href="{{ route('mahasiswa.peminjaman.bukti-pdf', $pinjam->id) }}"
+                                    class="px-3 py-1 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition text-xs font-medium inline-flex items-center justify-center gap-1"
+                                    target="_blank">
+                                        <i class="fas fa-file-pdf"></i> Bukti
+                                    </a>
+                                </td>
+
+                                        <!-- Tombol Download Bukti PDF -->
+                                        {{-- <a href="{{ route('mahasiswa.peminjaman.bukti-pdf', $pinjam->id) }}"
+                                           class="px-3 py-1 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition text-xs font-medium"
+                                           target="_blank">
+                                            <i class="fas fa-file-pdf"></i> Bukti --}}
+                                        {{-- </a> --}}
+                                    {{-- </div>
+                                </td> --}}
                             </tr>
                             @endforeach
                         </tbody>

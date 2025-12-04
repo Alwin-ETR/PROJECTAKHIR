@@ -61,19 +61,19 @@
                     <a href="{{ route('mahasiswa.katalog') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('mahasiswa.katalog') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
                         <i class="fas fa-book w-5"></i>
-                        <span>Katalog Barang</span>
+                        <span>Katalog</span>
                     </a>
 
                     <a href="{{ route('mahasiswa.riwayat') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('mahasiswa.riwayat') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
                         <i class="fas fa-history w-5"></i>
-                        <span>Riwayat Peminjaman</span>
+                        <span>Riwayat</span>
                     </a>
 
                     <a href="{{ route('mahasiswa.profile') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('mahasiswa.profile') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
                         <i class="fas fa-user w-5"></i>
-                        <span>Profil Saya</span>
+                        <span>Profil</span>
                     </a>
                 </nav>
             </div>

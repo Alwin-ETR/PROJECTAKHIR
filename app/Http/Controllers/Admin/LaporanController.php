@@ -12,12 +12,7 @@ use Carbon\Carbon;
 class LaporanController extends Controller
 {
     // Form Laporan (filter)
-    // public function formLaporan()
-    // {
-    //     $list_mahasiswa = User::where('role', 'mahasiswa')->orderBy('name')->get();
-    //     return view('admin.peminjaman.laporan', compact('list_mahasiswa'));
-    // }
-        public function formLaporan()
+    public function formLaporan()
     {
         // Ambil semua mahasiswa dari database
         $list_mahasiswa = \App\Models\User::where('role', 'mahasiswa')->orderBy('name')->get();
@@ -44,7 +39,7 @@ class LaporanController extends Controller
         if ($request->status) {
             $query->where('status', $request->status);
         }
-        // Terbaru option
+        // Terbaru 
         if ($request->terbaru == 1) {
             $query->orderBy('created_at', 'desc')->limit(10);
         }

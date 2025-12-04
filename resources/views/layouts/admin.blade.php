@@ -59,19 +59,19 @@
                     <a href="{{ route('admin.barang.index') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('admin.barang.*') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
                         <i class="fas fa-boxes-stacked w-5"></i>
-                        <span>Manajemen Inventaris</span>
+                        <span>Inventaris</span>
                     </a>
 
                     <a href="{{ route('admin.mahasiswa.index') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('admin.mahasiswa.*') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
                         <i class="fas fa-user-graduate w-5"></i>
-                        <span>Manajemen Mahasiswa</span>
+                        <span>Mahasiswa</span>
                     </a>
 
                     <a href="{{ route('admin.peminjaman.index') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('admin.peminjaman.*') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
                         <i class="fas fa-clipboard-check w-5"></i>
-                        <span>Manajemen Peminjaman</span>
+                        <span>Peminjaman</span>
                     </a>
                 </nav>
             </div>

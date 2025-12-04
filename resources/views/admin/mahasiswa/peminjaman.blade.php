@@ -60,7 +60,7 @@
 
     <!-- Riwayat Peminjaman -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200">
-        <div class="px-5 py-3 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-indigo-600">
+        <div class="px-5 py-3 border-b border-gray-200 bg-linear-to-br from-blue-600 to-indigo-600">
             <h2 class="text-sm font-semibold text-white flex items-center gap-2">
                 <i class="bi bi-clipboard-check"></i>
                 Riwayat Peminjaman
@@ -114,22 +114,31 @@
                                         </span>
                                     </td>
                                     <td class="px-4 py-2">
+                                        @php
+                                            $today = now()->startOfDay();
+                                            $due   = $p->tanggal_kembali->startOfDay();
+                                        @endphp
+
                                         @if($p->isOverdue())
                                             @php
-                                                $daysLate = now()->diffInDays($p->tanggal_kembali);
+                                                // jumlah hari telat (integer)
+                                                $daysLate = $today->diffInDays($due, false) * -1; // hasil negatif dibalik
                                             @endphp
                                             <span class="inline-flex px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
                                                 Terlambat {{ $daysLate }} hari
                                             </span>
-                                        @elseif($p->status == 'disetujui' && now()->lessThanOrEqualTo($p->tanggal_kembali))
+
+                                        @elseif($p->status == 'disetujui' && $today->lessThanOrEqualTo($due))
                                             @php
-                                                $daysLeft = now()->diffInDays($p->tanggal_kembali, false);
+                                                // sisa hari sampai jatuh tempo (bisa 0,1,2,...)
+                                                $daysLeft = $today->diffInDays($due, false);
                                             @endphp
                                             @if($daysLeft >= 0)
                                                 <span class="inline-flex px-2 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
                                                     {{ $daysLeft }} hari lagi
                                                 </span>
                                             @endif
+
                                         @else
                                             <span class="text-xs text-gray-400">-</span>
                                         @endif
@@ -147,35 +156,5 @@
             @endif
         </div>
     </div>
-
-    <!-- Statistik Peminjaman -->
-    @if($peminjaman->count() > 0)
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="rounded-xl bg-blue-600 text-white p-4 shadow-sm">
-            <p class="text-sm font-semibold">Disetujui</p>
-            <p class="mt-2 text-3xl font-bold">
-                {{ $peminjaman->where('status', 'disetujui')->count() }}
-            </p>
-        </div>
-        <div class="rounded-xl bg-amber-500 text-white p-4 shadow-sm">
-            <p class="text-sm font-semibold">Pending</p>
-            <p class="mt-2 text-3xl font-bold">
-                {{ $peminjaman->where('status', 'pending')->count() }}
-            </p>
-        </div>
-        <div class="rounded-xl bg-red-600 text-white p-4 shadow-sm">
-            <p class="text-sm font-semibold">Ditolak</p>
-            <p class="mt-2 text-3xl font-bold">
-                {{ $peminjaman->where('status', 'ditolak')->count() }}
-            </p>
-        </div>
-        <div class="rounded-xl bg-sky-600 text-white p-4 shadow-sm">
-            <p class="text-sm font-semibold">Terlambat</p>
-            <p class="mt-2 text-3xl font-bold">
-                {{ $peminjaman->where('status', 'disetujui')->filter(function($p) { return $p->isOverdue(); })->count() }}
-            </p>
-        </div>
-    </div>
-    @endif
 </div>
 @endsection
