@@ -30,12 +30,18 @@
     <!-- Navbar -->
     <nav class="bg-white border-b-2 border-gray-200 shadow-sm fixed w-full top-0 z-50">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <img src="{{ asset('storage/images/unej.png') }}" alt="UNEJ" class="h-8 w-8 rounded-lg" onerror="this.style.display='none'">
-                <span class="ml-2 flex items-center gap-3">
-                    <span class="font-bold text-lg text-gray-900">SIPINJAM</span>
-                </span>
+            <div class="flex items-center gap-3">
+                <img src="{{ asset('storage/images/logo-sipinjam.png') }}" 
+                        alt="Logo SIPINJAM" 
+                    class="h-10 w-auto object-contain">
+                <div>
+                    <h2 class="text-2xl font-bold text-blue-900 leading-tight">SIPINJAM</h2>
+                    <p class="text-blue-600 text-xs hidden sm:block -mt-1">
+                        Sistem Peminjaman Inventaris
+                    </p>
+                </div>
             </div>
+
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="#beranda" class="text-gray-600 hover:text-accent font-medium transition-colors">Beranda</a>
                 <a href="#fitur" class="text-gray-600 hover:text-accent font-medium transition-colors">Fitur</a>

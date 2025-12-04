@@ -10,10 +10,21 @@
         <p class="text-gray-500">Sistem Peminjaman Inventaris Fasilkom</p>
     </div>
 
+    <!-- Greeting Section -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 flex items-center gap-3">
+            👋 Halo, {{ Auth::user()->name ?? 'Mahasiswa' }}!
+        </h1>
+        <p class="text-gray-600 mt-1 text-sm sm:text-base">
+            Senang melihatmu kembali di <span class="font-semibold text-blue-700">SIPINJAM</span>. 
+            Semoga harimu menyenangkan dan proses peminjaman berjalan lancar!
+        </p>
+    </div>
+
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <!-- Total Peminjaman -->
-        <div class="bg-linear-to-br from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6">
+        <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl shadow-lg p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-blue-100 text-sm mb-1">Total Peminjaman</p>
@@ -24,7 +35,7 @@
         </div>
 
         <!-- Sedang Dipinjam (pakai count baru dari controller) -->
-        <div class="bg-linear-to-br from-amber-500 to-amber-600 text-white rounded-xl shadow-lg p-6">
+        <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-xl shadow-lg p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-amber-100 text-sm mb-1">Sedang Dipinjam</p>
@@ -35,7 +46,7 @@
         </div>
 
         <!-- Sudah Dikembalikan -->
-        <div class="bg-linear-to-br from-green-500 to-green-600 text-white rounded-xl shadow-lg p-6">
+        <div class="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-xl shadow-lg p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-green-100 text-sm mb-1">Sudah Dikembalikan</p>

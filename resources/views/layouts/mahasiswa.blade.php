@@ -16,111 +16,170 @@
             font-family: 'Inter', sans-serif;
         }
 
-        .sidebar-menu-item {
-            @apply text-gray-100 px-4 py-3 rounded-lg mb-2 transition-all duration-300 cursor-pointer flex items-center gap-3;
+        .nav-link {
+            @apply text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 cursor-pointer flex items-center gap-2;
             font-weight: 500;
         }
 
-        .sidebar-menu-item:hover {
-            @apply bg-white/10 text-white translate-x-1;
+        .nav-link:hover {
+            @apply bg-blue-50 text-blue-900;
         }
 
-        .sidebar-menu-item.active {
-            @apply bg-white/20 text-white border-l-4 border-white;
+        .nav-link.active {
+            @apply text-blue-900 border-b-4 border-blue-600 bg-blue-50;
         }
 
-        .stat-card {
-            @apply transition-transform duration-200 hover:shadow-lg hover:-translate-y-1;
+        .mobile-menu {
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .desktop-nav {
+                display: none;
+            }
+            .mobile-menu {
+                display: block;
+            }
         }
     </style>
 </head>
-<body class="bg-white text-gray-900">
-    <div class="flex h-screen">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white min-h-screen overflow-y-auto flex-shrink-0 hidden lg:flex lg:flex-col">
-            <!-- Top Content -->
-            <div class="p-6 flex-1 overflow-y-auto">
-                <!-- Logo -->
-                <div class="mb-8">
-                    <h2 class="text-2xl font-bold flex items-center gap-2">
-                        <span>SIPINJAM</span>
-                    </h2>
-                    <p class="text-blue-200 text-sm mt-1">Sistem Peminjaman Inventaris</p>
+<body class="bg-gray-50 text-gray-900">
+    <!-- Top Navigation Header -->
+    <header class="bg-white border-b-2 border-gray-200 shadow-sm sticky top-0 z-50">
+        <div class="px-6 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo/Left Section -->
+                <div class="flex items-center gap-3">
+                    <img src="{{ asset('storage/images/logo-sipinjam.png') }}" 
+                        alt="Logo SIPINJAM" 
+                        class="h-10 w-auto object-contain">
+
+                    <div>
+                        <h2 class="text-2xl font-bold text-blue-900 leading-tight">SIPINJAM</h2>
+                        <p class="text-blue-600 text-xs hidden sm:block -mt-1">
+                            Sistem Peminjaman Inventaris
+                        </p>
+                    </div>
                 </div>
 
-                <hr class="border-blue-700 mb-6">
+                <!-- Desktop Navigation -->
+                <nav class="desktop-nav flex items-center gap-1">
 
-                <!-- Navigation Menu -->
-                <nav class="space-y-1">
                     <a href="{{ route('mahasiswa.dashboard') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('mahasiswa.dashboard') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
-                        <i class="fas fa-chart-line w-5"></i>
+                    class="px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-all
+                    {{ request()->routeIs('mahasiswa.dashboard') ? 'text-blue-900 bg-blue-50 border-b-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
+                        {{-- <i class="fas fa-chart-line"></i> --}}
                         <span>Dashboard</span>
                     </a>
 
                     <a href="{{ route('mahasiswa.katalog') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('mahasiswa.katalog') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
-                        <i class="fas fa-book w-5"></i>
+                    class="px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-all
+                    {{ request()->routeIs('mahasiswa.katalog') ? 'text-blue-900 bg-blue-50 border-b-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
+                        {{-- <i class="fas fa-book"></i> --}}
                         <span>Katalog</span>
                     </a>
 
                     <a href="{{ route('mahasiswa.riwayat') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('mahasiswa.riwayat') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
-                        <i class="fas fa-history w-5"></i>
+                    class="px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-all
+                    {{ request()->routeIs('mahasiswa.riwayat') ? 'text-blue-900 bg-blue-50 border-b-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
+                        {{-- <i class="fas fa-history"></i> --}}
                         <span>Riwayat</span>
                     </a>
 
                     <a href="{{ route('mahasiswa.profile') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all {{ request()->routeIs('mahasiswa.profile') ? 'bg-white/20 border-l-4 border-white text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white' }}">
-                        <i class="fas fa-user w-5"></i>
+                    class="px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-all
+                    {{ request()->routeIs('mahasiswa.profile') ? 'text-blue-900 bg-blue-50 border-b-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
+                        {{-- <i class="fas fa-user"></i> --}}
                         <span>Profil</span>
                     </a>
+
                 </nav>
-            </div>
 
-            <!-- Logout Button -->
-            <div class="p-6 border-t border-blue-700">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-all font-medium">
-                        <i class="fas fa-sign-out-alt w-5"></i>
-                        <span>Logout</span>
-                    </button>
-                </form>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto">
-
-            <!-- Top Header -->
-            <header class="bg-white border-b-2 border-gray-200 shadow-sm sticky top-0 z-40">
-                <div class="flex justify-between items-center px-8 py-4">
-                    <!-- Left: Empty -->
-                    <div></div>
-
-                    <!-- Right: Profile Only -->
-                    <div class="flex items-center gap-3">
+                <!-- Right Section: Profile, Logout & Mobile Menu -->
+                <div class="flex items-center gap-3">
+                    <!-- Username & Avatar -->
+                    <div class="hidden sm:flex items-center gap-3 pr-3 border-r border-gray-200">
                         <div class="text-right">
                             <p class="text-sm font-bold text-gray-900">{{ Auth::user()->name ?? 'Mahasiswa' }}</p>
-                            <p class="text-xs text-gray-500">Mahasiswa</p>
                         </div>
                         <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'User' }}&background=random"
                             alt="Avatar" class="w-10 h-10 rounded-full border-2 border-blue-400">
                     </div>
-                </div>
-            </header>
 
-            <!-- Page Content -->
-            <div class="px-8 py-6">
-                @yield('content')
+                    <!-- Logout Button -->
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-all font-medium text-sm flex items-center gap-2">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="hidden sm:inline">Logout</span>
+                        </button>
+                    </form>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button class="mobile-menu lg:hidden text-gray-900 hover:text-blue-900" id="mobileMenuBtn">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
             </div>
-        </main>
-    </div>
+
+            <!-- Mobile Navigation Menu -->
+            <nav class="mobile-menu mt-4 space-y-2 hidden" id="mobileNav">
+
+                <a href="{{ route('mahasiswa.dashboard') }}"
+                class="block px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all
+                {{ request()->routeIs('mahasiswa.dashboard') ? 'text-blue-900 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="{{ route('mahasiswa.katalog') }}"
+                class="block px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all
+                {{ request()->routeIs('mahasiswa.katalog') ? 'text-blue-900 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
+                    <i class="fas fa-book"></i>
+                    <span>Katalog</span>
+                </a>
+
+                <a href="{{ route('mahasiswa.riwayat') }}"
+                class="block px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all
+                {{ request()->routeIs('mahasiswa.riwayat') ? 'text-blue-900 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
+                    <i class="fas fa-history"></i>
+                    <span>Riwayat</span>
+                </a>
+
+                <a href="{{ route('mahasiswa.profile') }}"
+                class="block px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all
+                {{ request()->routeIs('mahasiswa.profile') ? 'text-blue-900 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
+                    <i class="fas fa-user"></i>
+                    <span>Profil</span>
+                </a>
+
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto">
+        <!-- Page Content -->
+        <div class="px-6 py-6 max-w-7xl mx-auto">
+            @yield('content')
+        </div>
+    </main>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Mobile Menu Toggle Script -->
+    <script>
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileNav.classList.toggle('hidden');
+            });
+        }
+    </script>
 
     <!-- SweetAlert Notifications -->
     @if(session('success'))
@@ -163,7 +222,6 @@
             if (parts.length === 2) return parts.pop().split(';').shift();
         }
 
-        // Simpan barang yang dilihat ke cookie
         function simpanKeRiwayat(barangId) {
             let riwayat = JSON.parse(getCookie('barang_terakhir_dilihat') || '[]');
             riwayat = riwayat.filter(id => id != barangId);
