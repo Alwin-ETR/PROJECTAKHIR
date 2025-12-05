@@ -24,6 +24,14 @@
         body { 
             font-family: 'Inter', sans-serif; 
         }
+        
+        /* Active link style */
+        a.nav-link.active {
+            color: #0d6efd;
+            font-weight: 600;
+            border-bottom: 3px solid #0d6efd;
+            padding-bottom: 2px;
+        }
     </style>
 </head>
 <body class="bg-white text-gray-900">
@@ -43,39 +51,39 @@
             </div>
 
             <div class="hidden md:flex space-x-8 items-center">
-                <a href="#beranda" class="text-gray-600 hover:text-accent font-medium transition-colors">Beranda</a>
-                <a href="#fitur" class="text-gray-600 hover:text-accent font-medium transition-colors">Fitur</a>
-                <a href="#workflow" class="text-gray-600 hover:text-accent font-medium transition-colors">Tata Cara</a>
-                <a href="#faq" class="text-gray-600 hover:text-accent font-medium transition-colors">FAQ</a>
-                <a href="#kontak" class="text-gray-600 hover:text-accent font-medium transition-colors">Kontak</a>
+                <a href="#beranda" class="nav-link text-gray-600 hover:text-accent font-medium transition-colors">Beranda</a>
+                <a href="#fitur" class="nav-link text-gray-600 hover:text-accent font-medium transition-colors">Fitur</a>
+                <a href="#workflow" class="nav-link text-gray-600 hover:text-accent font-medium transition-colors">Tata Cara</a>
+                <a href="#faq" class="nav-link text-gray-600 hover:text-accent font-medium transition-colors">FAQ</a>
+                <a href="#kontak" class="nav-link text-gray-600 hover:text-accent font-medium transition-colors">Kontak</a>
                 <a href="{{ route('login') }}" class="ml-6 px-5 py-2 bg-accent text-white rounded-lg font-semibold shadow hover:bg-blue-700 hover:scale-105 transition-all">Masuk</a>
             </div>
         </div>
     </nav>
 
     {{-- Hero Section  --}}
-    <section id="beranda" class="pt-32 pb-20 bg-cover bg-top" style="background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.8)), url('{{ asset('storage/images/Jember(UNEJ).jpg') }}');">
-    <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
-        <div class="md:w-1/2 mb-10 md:mb-0">
-            <h1 class="text-4xl md:text-5xl font-bold mb-5 leading-tight text-gray-900">
-                Sistem Manajemen Peminjaman Inventaris di Fasilkom
-            </h1>
-            <p class="text-lg mb-7 text-gray-600">
-                Platform peminjaman inventaris Fakultas Ilmu Komputer Universitas Jember, memudahkan mahasiswa dan staf mengakses dan mengelola barang kampus secara efisien dan transparan.
-            </p>
-            <a href="{{ route('login') }}" class="bg-gradient-to-r from-accent to-blue-600 text-white inline-block px-8 py-4 rounded-lg font-bold text-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200">
-                Mulai Pinjam
-            </a>
+    <section id="beranda" class="min-h-screen pt-32 pb-20 bg-cover bg-top flex items-center" style="background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.8)), url('{{ asset('storage/images/Jember(UNEJ).jpg') }}');">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between w-full">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold mb-5 leading-tight text-gray-900">
+                    Sistem Manajemen Peminjaman Inventaris di Fasilkom
+                </h1>
+                <p class="text-lg mb-7 text-gray-600">
+                    Platform peminjaman inventaris Fakultas Ilmu Komputer Universitas Jember, memudahkan mahasiswa dan staf mengakses dan mengelola barang kampus secara efisien dan transparan.
+                </p>
+                <a href="{{ route('login') }}" class="bg-gradient-to-r from-accent to-blue-600 text-white inline-block px-8 py-4 rounded-lg font-bold text-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-200">
+                    Mulai Pinjam
+                </a>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <img src="{{ asset('storage/images/unej.png') }}" alt="Hero SIPINJAM" class="w-80 h-80 object-contain drop-shadow-2xl rounded-3xl" onerror="this.style.display='none'">
+            </div>
         </div>
-        <div class="md:w-1/2 flex justify-center">
-            <img src="{{ asset('storage/images/unej.png') }}" alt="Hero SIPINJAM" class="w-80 h-80 object-contain drop-shadow-2xl rounded-3xl" onerror="this.style.display='none'">
-        </div>
-    </div>
-</section>
+    </section>
 
     <!-- Tentang & Fitur -->
-    <section id="fitur" class="py-16 bg-gray-50">
-        <div class="container mx-auto px-6">
+    <section id="fitur" class="min-h-screen py-16 bg-gray-50 flex items-center">
+        <div class="container mx-auto px-6 w-full">
             <h2 class="text-3xl font-bold text-gray-900 mb-4">Tentang SIPINJAM</h2>
             <p class="mb-8 text-lg text-gray-600">
                 Platform peminjaman inventaris Fakultas Ilmu Komputer Universitas Jember, memudahkan mahasiswa dan staf mengakses dan mengelola barang kampus secara efisien dan transparan.
@@ -111,8 +119,8 @@
     </section>
 
     <!-- Workflow Section -->
-    <section id="workflow" class="py-16 bg-white">
-        <div class="container mx-auto px-6">
+    <section id="workflow" class="min-h-screen py-16 bg-white flex items-center">
+        <div class="container mx-auto px-6 w-full">
             <h2 class="text-3xl font-bold text-gray-900 mb-6">Alur Proses Peminjaman</h2>
             <div class="grid md:grid-cols-6 gap-6 text-center">
                 <div>
@@ -156,8 +164,8 @@
     </section>
 
     <!-- FAQ Section -->
-    <section id="faq" class="py-16 bg-gray-50">
-        <div class="container mx-auto px-6">
+    <section id="faq" class="min-h-screen py-16 bg-gray-50 flex items-center">
+        <div class="container mx-auto px-6 w-full">
             <h2 class="text-3xl font-bold text-gray-900 mb-8">FAQ</h2>
             <div class="space-y-6">
                 <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
@@ -177,23 +185,25 @@
     </section>
 
     <!-- Footer -->
-    <footer id="kontak" class="bg-white py-12 border-t-2 border-gray-200">
-        <div class="container mx-auto px-6 grid md:grid-cols-2 gap-10">
-            <div>
-                <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">SIPINJAM</h3>
-                <p class="text-gray-600">Sistem Peminjaman Inventaris Fakultas Ilmu Komputer Universitas Jember</p>
+    <footer id="kontak" class="min-h-screen bg-white py-12 border-t-2 border-gray-200 flex items-center">
+        <div class="container mx-auto px-6 w-full">
+            <div class="grid md:grid-cols-2 gap-10 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2 text-gray-900">SIPINJAM</h3>
+                    <p class="text-gray-600">Sistem Peminjaman Inventaris Fakultas Ilmu Komputer Universitas Jember</p>
+                </div>
+                <div class="flex flex-col gap-2 justify-center text-gray-600">
+                    <span><i class="fas fa-envelope mr-2 text-accent"></i> fasilkom@unej.ac.id</span>
+                    <span><i class="fas fa-phone mr-2 text-accent"></i> +62 331-326911</span>
+                    <span><i class="fas fa-map-marker-alt mr-2 text-accent"></i> Jl. Kalimantan No.37, Kampus Tegalboto, Sumbersari, Jember</span>
+                </div>
             </div>
-            <div class="flex flex-col gap-2 justify-center text-gray-600">
-                <span><i class="fas fa-envelope mr-2 text-accent"></i> fasilkom@unej.ac.id</span>
-                <span><i class="fas fa-phone mr-2 text-accent"></i> +62 331-326911</span>
-                <span><i class="fas fa-map-marker-alt mr-2 text-accent"></i> Jl. Kalimantan No.37, Kampus Tegalboto, Sumbersari, Jember</span>
-            </div>
+            <div class="text-center text-gray-500 pt-7 text-sm">&copy; 2025 SIPINJAM - Fasilkom UNEJ. All rights reserved.</div>
         </div>
-        <div class="text-center text-gray-500 pt-7 text-sm">&copy; 2025 SIPINJAM - Fasilkom UNEJ. All rights reserved.</div>
     </footer>
 
     <script>
-        // Smooth scroll
+        // Smooth scroll + Active nav link
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -203,6 +213,33 @@
                 }
             });
         });
+
+        // Update active nav link on scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            // Remove active class from all links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Add active class to current link
+            if (current) {
+                document.querySelector(`.nav-link[href="#${current}"]`)?.classList.add('active');
+            }
+        });
+
+        // Set initial active link
+        document.querySelector('.nav-link[href="#beranda"]')?.classList.add('active');
     </script>
 </body>
 </html>

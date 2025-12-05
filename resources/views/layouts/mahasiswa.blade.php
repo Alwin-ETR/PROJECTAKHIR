@@ -17,16 +17,25 @@
         }
 
         .nav-link {
-            @apply text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 cursor-pointer flex items-center gap-2;
+            @apply text-gray-700 px-6 py-2 rounded-lg transition-all duration-300 cursor-pointer flex items-center gap-2;
             font-weight: 500;
+            position: relative;
         }
 
         .nav-link:hover {
             @apply bg-blue-50 text-blue-900;
         }
 
+        /* Desktop Active Style */
         .nav-link.active {
-            @apply text-blue-900 border-b-4 border-blue-600 bg-blue-50;
+            @apply text-blue-900 bg-blue-50;
+            border-bottom: 3px solid #0d6efd;
+            padding-bottom: calc(0.5rem - 3px);
+        }
+
+        /* Mobile Active Style */
+        .nav-link.active-mobile {
+            @apply text-blue-900 bg-blue-50 border-l-4 border-blue-600 pl-3;
         }
 
         .mobile-menu {
@@ -63,36 +72,26 @@
                 </div>
 
                 <!-- Desktop Navigation -->
-                <nav class="desktop-nav flex items-center gap-1">
-
+                <nav class="desktop-nav flex items-center gap-4">
                     <a href="{{ route('mahasiswa.dashboard') }}"
-                    class="px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-all
-                    {{ request()->routeIs('mahasiswa.dashboard') ? 'text-blue-900 bg-blue-50 border-b-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
-                        {{-- <i class="fas fa-chart-line"></i> --}}
+                        class="nav-link {{ request()->routeIs('mahasiswa.dashboard') ? 'active' : '' }}">
                         <span>Dashboard</span>
                     </a>
 
                     <a href="{{ route('mahasiswa.katalog') }}"
-                    class="px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-all
-                    {{ request()->routeIs('mahasiswa.katalog') ? 'text-blue-900 bg-blue-50 border-b-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
-                        {{-- <i class="fas fa-book"></i> --}}
+                        class="nav-link {{ request()->routeIs('mahasiswa.katalog') ? 'active' : '' }}">
                         <span>Katalog</span>
                     </a>
 
                     <a href="{{ route('mahasiswa.riwayat') }}"
-                    class="px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-all
-                    {{ request()->routeIs('mahasiswa.riwayat') ? 'text-blue-900 bg-blue-50 border-b-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
-                        {{-- <i class="fas fa-history"></i> --}}
+                        class="nav-link {{ request()->routeIs('mahasiswa.riwayat') ? 'active' : '' }}">
                         <span>Riwayat</span>
                     </a>
 
                     <a href="{{ route('mahasiswa.profile') }}"
-                    class="px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-all
-                    {{ request()->routeIs('mahasiswa.profile') ? 'text-blue-900 bg-blue-50 border-b-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
-                        {{-- <i class="fas fa-user"></i> --}}
+                        class="nav-link {{ request()->routeIs('mahasiswa.profile') ? 'active' : '' }}">
                         <span>Profil</span>
                     </a>
-
                 </nav>
 
                 <!-- Right Section: Profile, Logout & Mobile Menu -->
@@ -124,35 +123,29 @@
 
             <!-- Mobile Navigation Menu -->
             <nav class="mobile-menu mt-4 space-y-2 hidden" id="mobileNav">
-
                 <a href="{{ route('mahasiswa.dashboard') }}"
-                class="block px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all
-                {{ request()->routeIs('mahasiswa.dashboard') ? 'text-blue-900 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
+                    class="nav-link {{ request()->routeIs('mahasiswa.dashboard') ? 'active-mobile' : '' }}">
                     <i class="fas fa-chart-line"></i>
                     <span>Dashboard</span>
                 </a>
 
                 <a href="{{ route('mahasiswa.katalog') }}"
-                class="block px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all
-                {{ request()->routeIs('mahasiswa.katalog') ? 'text-blue-900 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
+                    class="nav-link {{ request()->routeIs('mahasiswa.katalog') ? 'active-mobile' : '' }}">
                     <i class="fas fa-book"></i>
                     <span>Katalog</span>
                 </a>
 
                 <a href="{{ route('mahasiswa.riwayat') }}"
-                class="block px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all
-                {{ request()->routeIs('mahasiswa.riwayat') ? 'text-blue-900 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
+                    class="nav-link {{ request()->routeIs('mahasiswa.riwayat') ? 'active-mobile' : '' }}">
                     <i class="fas fa-history"></i>
                     <span>Riwayat</span>
                 </a>
 
                 <a href="{{ route('mahasiswa.profile') }}"
-                class="block px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all
-                {{ request()->routeIs('mahasiswa.profile') ? 'text-blue-900 bg-blue-50 border-l-4 border-blue-600' : 'text-gray-700 hover:bg-blue-50 hover:text-blue-900' }}">
+                    class="nav-link {{ request()->routeIs('mahasiswa.profile') ? 'active-mobile' : '' }}">
                     <i class="fas fa-user"></i>
                     <span>Profil</span>
                 </a>
-
             </nav>
         </div>
     </header>

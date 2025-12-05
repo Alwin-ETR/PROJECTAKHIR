@@ -40,6 +40,11 @@ class PeminjamanController extends Controller
 
     public function submit(Request $request)
     {
+        // Check apakah user suspend ← TAMBAH INI
+        if (auth()->user()->isSuspended()) {
+            return redirect()->back()->with('error', '🚫 Akun Anda sedang suspend. Tidak bisa membuat peminjaman baru sampai suspend berakhir.');
+        }
+
         $request->validate([
             'tanggal_pinjam'   => 'required|date|after_or_equal:today',
             'tanggal_kembali'  => 'required|date|after:tanggal_pinjam',

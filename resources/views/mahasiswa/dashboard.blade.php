@@ -4,6 +4,35 @@
 
 @section('content')
 <div class="min-h-screen bg-gray-50">
+    <!-- SUSPEND ALERT - Tambahkan di paling atas -->
+    @if(auth()->user()->isSuspended())
+        @php
+            $suspension = auth()->user()->getActiveSuspension();
+        @endphp
+        
+        <div class="mb-6 p-5 rounded-xl bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-600 shadow-md">
+            <div class="flex items-start gap-4">
+                <i class="fas fa-exclamation-triangle text-red-600 text-3xl mt-1 flex-shrink-0"></i>
+                <div class="flex-1">
+                    <h3 class="font-bold text-red-900 text-lg mb-3">🚫 Akun Anda Sedang Dalam Status Suspend</h3>
+                    <div class="space-y-2 text-red-800">
+                        <p><strong>📋 Alasan Suspend:</strong> {{ $suspension->reason }}</p>
+                        <p><strong>📅 Suspend Dimulai:</strong> {{ $suspension->suspended_at->format('d M Y, H:i') }}</p>
+                        <p><strong>⏰ Suspend Berakhir:</strong> {{ $suspension->suspended_until->format('d M Y') }}</p>
+                        <p class="text-base mt-3">
+                            <strong>⏱️ Sisa Waktu Suspend:</strong> 
+                            <span class="text-2xl font-bold text-red-700">{{ $suspension->getRemainingDays() }} hari</span>
+                        </p>
+                    </div>
+                    <div class="mt-4 p-3 rounded-lg bg-red-200 text-red-900 text-sm border border-red-300">
+                        <strong>⚠️ Perhatian:</strong> Anda tidak dapat membuat peminjaman barang baru sampai suspend berakhir. Anda masih dapat melihat katalog dan riwayat peminjaman Anda.
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    <!-- END SUSPEND ALERT -->
+
     <!-- Title Section -->
     <div class="mb-8">
         <h1 class="text-3xl font-bold text-gray-800 mb-2">Dashboard Mahasiswa</h1>
@@ -92,7 +121,7 @@
         </div>
     @endif
 
-    {{-- ========== NEW: Pengingat tenggat peminjaman aktif ========== --}}
+    {{-- ========== Pengingat tenggat peminjaman aktif ========== --}}
     @if(isset($peminjamanAktif) && $peminjamanAktif->count())
         @foreach($peminjamanAktif as $pinjam)
             @php $sisa = $pinjam->sisa_hari ?? null; @endphp
@@ -120,7 +149,7 @@
             @endif
         @endforeach
     @endif
-    {{-- ========== END NEW ========== --}}
+    {{-- ========== END ========== --}}
 
     <!-- Quick Actions -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

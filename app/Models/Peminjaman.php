@@ -71,4 +71,29 @@ class Peminjaman extends Model
 
         return $statuses[$this->status] ?? 'Tidak Diketahui';
     }
+
+    public function suspension()
+    {
+        return $this->hasOne(Suspension::class, 'user_id', 'user_id')
+            ->where('status', 'active')
+            ->where('suspended_until', '>', now());
+    }
+
+    // Method untuk check apakah peminjaman telat
+    public function isLate()
+    {
+        return $this->tanggal_pengembalian === null && 
+            now()->gt($this->tanggal_kembali);
+    }
+
+    // Hitung hari telat
+    public function getDaysLate()
+    {
+        if ($this->tanggal_pengembalian) {
+            return \Carbon\Carbon::parse($this->tanggal_kembali)
+                ->diffInDays(\Carbon\Carbon::parse($this->tanggal_pengembalian));
+        }
+        
+        return now()->diffInDays($this->tanggal_kembali);
+    }
 }

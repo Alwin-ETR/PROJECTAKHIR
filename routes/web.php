@@ -75,6 +75,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/peminjaman/laporan', [LaporanController::class, 'formLaporan'])->name('admin.peminjaman.laporan');
         Route::get('/peminjaman/laporan/download', [LaporanController::class, 'downloadRiwayat'])->name('admin.peminjaman.laporan.download');
+
+        Route::get('/suspensions', [\App\Http\Controllers\Admin\SuspensionController::class, 'index'])->name('suspensions.index');
+        Route::post('/suspensions/{suspension}/unlock', [\App\Http\Controllers\Admin\SuspensionController::class, 'unlock'])->name('suspensions.unlock');
     });
 
     // Mahasiswa

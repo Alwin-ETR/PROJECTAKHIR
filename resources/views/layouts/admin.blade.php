@@ -45,7 +45,7 @@
                         alt="Logo SIPINJAM" 
                         class="w-12 h-12 object-contain drop-shadow-md">
                     <h2 class="text-2xl font-bold">
-                        ADMIN
+                        ADMIN SIPINJAM
                     </h2>
                 </div>
 

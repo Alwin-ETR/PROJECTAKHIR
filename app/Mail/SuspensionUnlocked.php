@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Mail;
+
+use App\Models\Suspension;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Queue\SerializesModels;
+
+class SuspensionUnlocked extends Mailable
+{
+    use Queueable, SerializesModels;
+
+    public function __construct(
+        public Suspension $suspension
+    ) {}
+
+    public function envelope(): Envelope
+    {
+        return new Envelope(
+            subject: '✅ Suspend Anda Sudah Berakhir',
+        );
+    }
+
+    public function content(): Content
+    {
+        return new Content(
+            view: 'emails.suspension-unlocked',
+            with: [
+                'suspension' => $this->suspension,
+                'userName' => $this->suspension->user->name,
+            ]
+        );
+    }
+}

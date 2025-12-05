@@ -2,6 +2,34 @@
 
 @section('content')
 <div class="min-h-screen bg-gray-50">
+    <!-- SUSPEND ALERT -->
+    @if(auth()->user()->isSuspended())
+        @php
+            $suspension = auth()->user()->getActiveSuspension();
+        @endphp
+        
+        <div class="mb-6 p-5 rounded-xl bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-600 shadow-md">
+            <div class="flex items-start gap-4">
+                <i class="fas fa-exclamation-triangle text-red-600 text-3xl mt-1 flex-shrink-0"></i>
+                <div class="flex-1">
+                    <h3 class="font-bold text-red-900 text-lg mb-3">🚫 Akun Anda Sedang Dalam Status Suspend</h3>
+                    <div class="space-y-2 text-red-800">
+                        <p><strong>📋 Alasan Suspend:</strong> {{ $suspension->reason }}</p>
+                        <p><strong>⏰ Suspend Berakhir:</strong> {{ $suspension->suspended_until->format('d M Y') }}</p>
+                        <p class="text-base mt-3">
+                            <strong>⏱️ Sisa Waktu:</strong> 
+                            <span class="text-2xl font-bold text-red-700">{{ $suspension->getRemainingDays() }} hari</span>
+                        </p>
+                    </div>
+                    <div class="mt-4 p-3 rounded-lg bg-red-200 text-red-900 text-sm border border-red-300">
+                        <strong>⚠️ Perhatian:</strong> Anda TIDAK DAPAT membuat peminjaman baru sampai suspend berakhir. Anda masih dapat melihat katalog, tetapi tombol "Pinjam" akan dinonaktifkan.
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    <!-- END SUSPEND ALERT -->
+
     <!-- Title Section -->
     <div class="mb-8">
         <h1 class="text-3xl font-bold text-gray-800 mb-2">Katalog Barang</h1>
@@ -26,6 +54,16 @@
             <i class="fas fa-check-circle mt-0.5"></i>
             <span>{{ session('success') }}</span>
             <button type="button" class="ml-auto text-green-700 hover:text-green-900" onclick="this.parentElement.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-4 rounded-lg mb-4 flex items-start gap-3" role="alert">
+            <i class="fas fa-exclamation-triangle mt-0.5"></i>
+            <span>{{ session('error') }}</span>
+            <button type="button" class="ml-auto text-red-700 hover:text-red-900" onclick="this.parentElement.remove()">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -97,11 +135,22 @@
                 <form action="{{ route('mahasiswa.cart.clear') }}" method="POST" class="inline">
                     @csrf
                     @method('DELETE')
+                    <button type="submit" class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition font-medium text-sm">
+                        <i class="fas fa-trash-alt"></i> Kosongkan Keranjang
+                    </button>
                 </form>
-                <a href="{{ route('mahasiswa.pengajuan.form') }}" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium flex items-center gap-2">
-                    <i class="fas fa-paper-plane"></i>
-                    Ajukan Peminjaman
-                </a>
+                
+                @if(auth()->user()->isSuspended())
+                    <button disabled class="px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed font-medium flex items-center gap-2 text-sm opacity-60">
+                        <i class="fas fa-lock"></i>
+                        Suspend - Tidak Bisa Ajukan
+                    </button>
+                @else
+                    <a href="{{ route('mahasiswa.pengajuan.form') }}" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-medium flex items-center gap-2">
+                        <i class="fas fa-paper-plane"></i>
+                        Ajukan Peminjaman
+                    </a>
+                @endif
             </div>
         </div>
     </div>
@@ -178,17 +227,21 @@
                         <button type="button" class="flex-1 px-3 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition text-sm font-medium" onclick="showBarangDetail({{ $item->id }})">
                             <i class="fas fa-eye"></i> Detail
                         </button>
-                        @if($item->canBeBorrowed())
-                        <form action="{{ route('mahasiswa.cart.add', $item->id) }}" method="POST" class="inline flex-1">
-                            @csrf
-                            <button type="submit" class="w-full px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium">
-                                <i class="fas fa-cart-plus"></i> Pinjam
+                        @if(auth()->user()->isSuspended())
+                            <button class="flex-1 px-3 py-2 bg-gray-300 text-gray-600 rounded-lg cursor-not-allowed text-sm font-medium" disabled title="Anda tidak bisa pinjam saat suspend">
+                                <i class="fas fa-ban"></i> Suspend
                             </button>
-                        </form>
+                        @elseif($item->canBeBorrowed())
+                            <form action="{{ route('mahasiswa.cart.add', $item->id) }}" method="POST" class="inline flex-1">
+                                @csrf
+                                <button type="submit" class="w-full px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium">
+                                    <i class="fas fa-cart-plus"></i> Pinjam
+                                </button>
+                            </form>
                         @else
-                        <button class="flex-1 px-3 py-2 bg-gray-300 text-gray-600 rounded-lg cursor-not-allowed text-sm font-medium" disabled>
-                            <i class="fas fa-lock"></i> Tidak Tersedia
-                        </button>
+                            <button class="flex-1 px-3 py-2 bg-gray-300 text-gray-600 rounded-lg cursor-not-allowed text-sm font-medium" disabled>
+                                <i class="fas fa-lock"></i> Tidak Tersedia
+                            </button>
                         @endif
                     </div>
                 </div>
