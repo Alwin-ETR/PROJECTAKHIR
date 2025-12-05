@@ -21,8 +21,28 @@
             <div class="md:w-5/12 bg-gray-900 text-white p-6 md:p-7 flex flex-col items-center justify-center text-center">
                 <div>
                     <div class="flex justify-center items-center gap-4 mb-6">
-                        <img src="{{ asset('storage/images/unej.png') }}" alt="UNEJ" class="h-9" onerror="this.style.display='none'">
-                        <img src="{{ asset('storage/images/fasilkom.png') }}" alt="Fasilkom" class="h-8 invert" onerror="this.style.display='none'">
+
+                        <!-- Logo UNEJ -->
+                        <div class="p-2 bg-white rounded-xl shadow-md border border-gray-200">
+                            <img src="{{ asset('storage/images/unej.png') }}"
+                                alt="UNEJ"
+                                class="h-10 object-contain">
+                        </div>
+
+                        <!-- Logo Fasilkom (Wrapper Biru Gradient) -->
+                        <div class="p-2 rounded-xl shadow-md border border-blue-300 bg-gradient-to-br from-blue-400 to-blue-600">
+                            <img src="{{ asset('storage/images/fasilkom.png') }}"
+                                alt="Fasilkom"
+                                class="h-9 object-contain">
+                        </div>
+
+                        <!-- Logo SIPINJAM -->
+                        <div class="p-2 bg-white rounded-xl shadow-md border border-gray-200">
+                            <img src="{{ asset('storage/images/logo-sipinjam.png') }}"
+                                alt="Sipinjam"
+                                class="h-10 object-contain">
+                        </div>
+
                     </div>
                     <h4 class="text-xl font-semibold mb-2">SIPINJAM</h4>
                     <p class="text-sm text-gray-200 leading-relaxed">

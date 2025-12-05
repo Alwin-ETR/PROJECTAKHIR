@@ -185,7 +185,7 @@
     </section>
 
     <!-- Footer -->
-    <footer id="kontak" class="min-h-screen bg-white py-12 border-t-2 border-gray-200 flex items-center">
+    <section id="kontak" class="min-h-screen bg-white py-12 border-t-2 border-gray-200 flex items-center">
         <div class="container mx-auto px-6 w-full">
             <div class="grid md:grid-cols-2 gap-10 mb-8">
                 <div>
@@ -200,7 +200,7 @@
             </div>
             <div class="text-center text-gray-500 pt-7 text-sm">&copy; 2025 SIPINJAM - Fasilkom UNEJ. All rights reserved.</div>
         </div>
-    </footer>
+    </section>
 
     <script>
         // Smooth scroll + Active nav link

@@ -18,33 +18,35 @@
 
     <div class="w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden relative z-10">
         <div class="flex flex-col md:flex-row">
-            {{-- KIRI: logo & teks --}}
-            {{-- <div class="md:w-5/12 bg-gray-900 text-white p-6 md:p-7 flex flex-col justify-between">
-                <div>
-                    <div class="flex justify-center items-center gap-4 mb-6">
-                        <img src="{{ asset('storage/images/unej.png') }}" alt="UNEJ" class="h-9" onerror="this.style.display='none'">
-                        <img src="{{ asset('storage/images/fasilkom.png') }}" alt="Fasilkom" class="h-8 invert" onerror="this.style.display='none'">
-                    </div>
-                    <h4 class="text-xl font-semibold text-center mb-2">SIPINJAM</h4>
-                    <p class="text-sm text-center text-gray-200 leading-relaxed">
-                        Sistem Peminjaman Inventaris<br>
-                        Fakultas Ilmu Komputer<br>
-                        Universitas Jember
-                    </p>
-                </div>
-
-                <p class="mt-8 text-[11px] text-center text-gray-400">
-                    &copy; 2025 Sistem Peminjaman Inventaris Fasilkom UNEJ.
-                </p>
-            </div> --}}
-
-            {{-- KIRI: logo & teks, full center --}}
+    
             <div class="md:w-5/12 bg-gray-900 text-white p-6 md:p-7 flex flex-col items-center justify-center text-center">
                 <div>
+
                     <div class="flex justify-center items-center gap-4 mb-6">
-                        <img src="{{ asset('storage/images/unej.png') }}" alt="UNEJ" class="h-9" onerror="this.style.display='none'">
-                        <img src="{{ asset('storage/images/fasilkom.png') }}" alt="Fasilkom" class="h-8 invert" onerror="this.style.display='none'">
+
+                        <!-- Logo UNEJ -->
+                        <div class="p-2 bg-white rounded-xl shadow-md border border-gray-200">
+                            <img src="{{ asset('storage/images/unej.png') }}"
+                                alt="UNEJ"
+                                class="h-10 object-contain">
+                        </div>
+
+                        <!-- Logo Fasilkom -->
+                        <div class="p-2 rounded-xl shadow-md border border-blue-300 bg-gradient-to-br from-blue-400 to-blue-600">
+                            <img src="{{ asset('storage/images/fasilkom.png') }}"
+                                alt="Fasilkom"
+                                class="h-9 object-contain">
+                        </div>
+
+                        <!-- Logo SIPINJAM -->
+                        <div class="p-2 bg-white rounded-xl shadow-md border border-gray-200">
+                            <img src="{{ asset('storage/images/logo-sipinjam.png') }}"
+                                alt="Sipinjam"
+                                class="h-10 object-contain">
+                        </div>
+
                     </div>
+
                     <h4 class="text-xl font-semibold mb-2">SIPINJAM</h4>
                     <p class="text-sm text-gray-200 leading-relaxed">
                         Sistem Peminjaman Inventaris<br>
@@ -52,13 +54,8 @@
                         Universitas Jember
                     </p>
                 </div>
-
-                {{-- <p class="mt-8 text-[11px] text-gray-400">
-                    &copy; 2025 Sistem Peminjaman Inventaris Fasilkom UNEJ.
-                </p> --}}
             </div>
 
-            {{-- KANAN: form register --}}
             <div class="md:w-7/12 p-6 md:p-7">
                 <h5 class="text-center text-lg font-semibold mb-5">
                     Daftar Akun Baru
@@ -77,33 +74,43 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label for="register_name" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                            <input
-                                type="text"
-                                id="register_name"
-                                name="name"
-                                value="{{ old('name') }}"
-                                required
-                                placeholder="Nama lengkap"
-                                class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('name') border-red-500 @enderror">
-                            @error('name')
-                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                            @enderror
+                            <div class="flex rounded-lg border border-gray-300 overflow-hidden">
+                                <span class="inline-flex items-center px-3 bg-gray-900 text-white">
+                                    <i class="fas fa-user text-sm"></i>
+                                </span>
+                                <input
+                                    type="text"
+                                    id="register_name"
+                                    name="name"
+                                    value="{{ old('name') }}"
+                                    required
+                                    placeholder="Nama lengkap"
+                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('name') border-red-500 @enderror">
+                                @error('name')
+                                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
 
                         <div>
                             <label for="register_nim" class="block text-sm font-medium text-gray-700 mb-1">NIM</label>
-                            <input
-                                type="text"
-                                id="register_nim"
-                                name="nim"
-                                value="{{ old('nim') }}"
-                                required
-                                maxlength="12"
-                                placeholder="12 digit NIM"
-                                class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('nim') border-red-500 @enderror">
-                            @error('nim')
-                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                            @enderror
+                            <div class="flex rounded-lg border border-gray-300 overflow-hidden">
+                                <span class="inline-flex items-center px-3 bg-gray-900 text-white">
+                                    <i class="fas fa-id-card text-sm"></i>
+                                </span>
+                                <input
+                                    type="text"
+                                    id="register_nim"
+                                    name="nim"
+                                    value="{{ old('nim') }}"
+                                    required
+                                    maxlength="12"
+                                    placeholder="12 digit NIM"
+                                    class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 @error('nim') border-red-500 @enderror">
+                                @error('nim')
+                                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
                     </div>
 
@@ -151,6 +158,9 @@
                         <div>
                             <label for="register_password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                             <div class="flex rounded-lg border border-gray-300 overflow-hidden">
+                                <span class="inline-flex items-center px-3 bg-gray-900 text-white">
+                                    <i class="fas fa-lock text-sm"></i>
+                                </span>
                                 <input
                                     type="password"
                                     id="register_password"
@@ -174,6 +184,9 @@
                     <div>
                         <label for="register_password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password</label>
                         <div class="flex rounded-lg border border-gray-300 overflow-hidden">
+                            <span class="inline-flex items-center px-3 bg-gray-900 text-white">
+                                <i class="fas fa-lock text-sm"></i>
+                            </span>
                             <input
                                 type="password"
                                 id="register_password_confirmation"
