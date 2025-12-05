@@ -70,7 +70,8 @@ class AuthController extends Controller
             return redirect()->route('admin.dashboard');
         }
         
-        return redirect()->route('mahasiswa.dashboard');
+        return redirect()->route('mahasiswa.dashboard')
+            ->with('success', 'Login berhasil! Selamat datang.');
     }
 
     public function register(Request $request)
@@ -115,7 +116,7 @@ class AuthController extends Controller
     {
         return view('auth.reset-password', [
             'token' => $token,
-            'email' => request()->email // dari query string
+            'email' => request()->email 
         ]);
     }
 
@@ -129,11 +130,6 @@ class AuthController extends Controller
             ? back()->with(['status' => 'Link reset password telah dikirim ke email Anda. Cek inbox atau folder spam.'])
             : back()->withErrors(['email' => __($status)]);
     }
-
-    // public function resetPassword($token)
-    // {
-    //     return view('auth.reset-password', ['request' => (object) ['token' => $token]]);
-    // }
 
     public function updatePassword(Request $request)
     {
@@ -153,7 +149,7 @@ class AuthController extends Controller
                 $user->save();
             }
         );
-
+        
         return $status === Password::PASSWORD_RESET
             ? redirect()->route('login')->with('status', 'Password berhasil direset! Silakan login dengan password baru Anda.')
             : back()->withErrors(['email' => [__($status)]]);

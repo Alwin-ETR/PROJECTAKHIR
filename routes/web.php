@@ -20,22 +20,34 @@ Route::get('/', [LandingController::class, 'index'])->name('landing');
 
 // Public
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/loginproses', [AuthController::class, 'login'])->name('login.post');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Password Reset (Lupa Password)
 Route::get('/lupa-password', [AuthController::class, 'forgotPassword'])->name('password.request');
-Route::post('/lupa-password', [AuthController::class, 'sendReset'])->name('password.email');
+Route::post('/lupa-password', [AuthController::class, 'sendResetLink'])->name('password.email');
 
-Route::get('/ketentuan', function () {
-    return view('ketentuan');
-})->name('ketentuan');
+// Reset password GET - tampilkan form reset
+Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->middleware('guest')->name('password.reset');
 
-// Password reset routes (Laravel built-in)
-// Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.request');
-// Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
-// Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('password.reset');
-// Route::post('/reset-password', [AuthController::class, 'updatePassword'])->name('password.store');
+// Reset password POST - proses update password
+Route::post('/reset-password', [AuthController::class, 'updatePassword'])->middleware('guest')->name('password.update');
+
+// Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+// Route::post('/loginproses', [AuthController::class, 'login'])->name('login.post');
+// Route::post('/register', [AuthController::class, 'register'])->name('register');
+// Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Route::get('/lupa-password', [AuthController::class, 'forgotPassword'])->name('password.request');
+// Route::post('/lupa-password', [AuthController::class, 'sendReset'])->name('password.email');
+
+// Route::get('/ketentuan', function () {
+//     return view('ketentuan');
+// })->name('ketentuan');
 
 // Authenticated
 Route::middleware(['auth'])->group(function () {

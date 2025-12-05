@@ -7,7 +7,7 @@
     <!-- Header -->
     <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800">Admin Panel</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Dashboard Admin</h1>
             <p class="text-sm text-gray-500">Ringkasan status inventaris dan peminjaman</p>
         </div>
     </div>
