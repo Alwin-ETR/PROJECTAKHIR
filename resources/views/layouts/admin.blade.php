@@ -41,13 +41,12 @@
             <div class="p-6 flex-1 overflow-y-auto">
                 <!-- Logo -->
                 <div class="mb-8 flex items-center gap-3">
-                    <img src="{{ asset('storage/images/logo-sipinjam.png') }}" 
-                        alt="Logo SIPINJAM" 
+                    <img src="{{ asset('storage/images/logo-sipinjam.png') }}" alt="Logo SIPINJAM" 
                         class="w-12 h-12 object-contain drop-shadow-md">
                     <h2 class="text-2xl font-bold">
                         ADMIN SIPINJAM
                     </h2>
-                </div>
+                </div> 
 
                 <hr class="border-blue-700 mb-6">
 

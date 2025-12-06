@@ -14,10 +14,9 @@ return new class extends Migration
             $table->unsignedBigInteger('peminjaman_id');
             $table->timestamps();
             
-            // Foreign key ke tabel peminjamans
             $table->foreign('peminjaman_id')
                 ->references('id')
-                ->on('peminjamans')  // ← Ini yang benar sesuai table nama
+                ->on('peminjamans') 
                 ->onDelete('cascade');
             
             $table->unique(['user_id', 'peminjaman_id']);

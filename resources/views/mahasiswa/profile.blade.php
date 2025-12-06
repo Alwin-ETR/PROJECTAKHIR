@@ -415,6 +415,43 @@ document.getElementById('formPassword').addEventListener('submit', function(e) {
     // Jika semua validasi lolos, form bisa disubmit
 });
 
+// Tampilkan error Laravel dari server jika ada
+@error('current_password')
+Swal.fire({
+    icon: 'error',
+    title: 'Gagal!',
+    text: '{{ $message }}',
+    confirmButtonText: 'OK',
+    position: 'center' // muncul di tengah
+}).then(() => {
+    // Pastikan edit mode tetap terbuka
+    document.getElementById('viewMode').classList.add('hidden');
+    document.getElementById('editMode').classList.remove('hidden');
+    // Tampilkan tab password
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    document.getElementById('password').classList.remove('hidden');
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('border-blue-600','text-blue-600'));
+    document.querySelector('[data-tab="password"]').classList.add('border-blue-600','text-blue-600');
+});
+@enderror
+
+@error('password')
+Swal.fire({
+    icon: 'error',
+    title: 'Gagal!',
+    text: '{{ $message }}',
+    confirmButtonText: 'OK',
+    position: 'center'
+}).then(() => {
+    document.getElementById('viewMode').classList.add('hidden');
+    document.getElementById('editMode').classList.remove('hidden');
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    document.getElementById('password').classList.remove('hidden');
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('border-blue-600','text-blue-600'));
+    document.querySelector('[data-tab="password"]').classList.add('border-blue-600','text-blue-600');
+});
+@enderror
+
 @if(session('success'))
 Swal.fire({
     icon: 'success',

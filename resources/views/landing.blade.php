@@ -39,15 +39,9 @@
     <nav class="bg-white border-b-2 border-gray-200 shadow-sm fixed w-full top-0 z-50">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <img src="{{ asset('storage/images/logo-sipinjam.png') }}" 
+                <img src="{{ asset('storage/images/sipinjam (2).png') }}" 
                         alt="Logo SIPINJAM" 
-                    class="h-10 w-auto object-contain">
-                <div>
-                    <h2 class="text-2xl font-bold text-blue-900 leading-tight">SIPINJAM</h2>
-                    <p class="text-blue-600 text-xs hidden sm:block -mt-1">
-                        Sistem Peminjaman Inventaris
-                    </p>
-                </div>
+                        class="h-12 sm:h-16 md:h-16 w-auto object-contain">
             </div>
 
             <div class="hidden md:flex space-x-8 items-center">
