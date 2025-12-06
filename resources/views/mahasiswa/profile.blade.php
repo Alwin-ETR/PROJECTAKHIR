@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="min-h-screen bg-gray-50">
-    <!-- Title Section -->
     <div class="mb-8 flex items-center justify-between">
         <div>
             <h1 class="text-3xl font-bold text-gray-800 mb-2">Profil Mahasiswa</h1>
@@ -14,7 +13,6 @@
         </button>
     </div>
 
-    <!-- Alert Session -->
     @if(session('success'))
         <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-4 rounded-lg mb-6 flex items-start gap-3" role="alert">
             <i class="fas fa-check-circle mt-0.5"></i>
@@ -101,7 +99,7 @@
                                 </button>
                             </div>
 
-                            <!-- Tab: Data Pribadi -->
+                            <!-- Data Pribadi -->
                             <div id="data-pribadi" class="tab-content space-y-4">
                                 <form id="formEdit" method="POST" action="{{ route('mahasiswa.profile.update') }}">
                                     @csrf
@@ -154,7 +152,7 @@
                                 </form>
                             </div>
 
-                            <!-- Tab: Password -->
+                            <!-- Password -->
                             <div id="password" class="tab-content hidden space-y-4">
                                 <form id="formPassword" method="POST" action="{{ route('mahasiswa.profile.update-password') }}">
                                     @csrf

@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('role', ['admin', 'mahasiswa'])->default('mahasiswa');
-            $table->string('nim')->unique()->nullable(); // TAMBAH UNIQUE DI SINI
+            $table->string('nim')->unique()->nullable(); 
             $table->string('phone')->nullable();
             $table->rememberToken();
             $table->timestamps();
